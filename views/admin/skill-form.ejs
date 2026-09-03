@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title><%= skill ? 'Edit Skill' : 'Tambah Skill' %> — Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/dashboard.css">
+<link rel="stylesheet" href="/css/skills.css">
+</head>
+<body>
+
+<div class="shell">
+
+  <%- include('../partials/admin-sidebar', { active: 'skills' }) %>
+
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <p class="eyebrow">Skills</p>
+        <h1><%= skill ? 'Edit Skill' : 'Tambah Skill Baru' %></h1>
+      </div>
+      <a href="/admin/skills" class="btn-ghost">Kembali</a>
+    </div>
+
+    <form action="<%= skill ? '/admin/skills/' + skill.id + '/update' : '/admin/skills' %>" method="POST" class="settings-form">
+
+      <div class="form-group">
+        <label for="name">Nama skill</label>
+        <input type="text" id="name" name="name" placeholder="Contoh: React" value="<%= skill ? skill.name : '' %>" required>
+      </div>
+
+      <div class="form-group">
+        <label for="category">Kategori</label>
+        <input type="text" id="category" name="category" placeholder="Contoh: Frontend" value="<%= skill ? skill.category : '' %>" required>
+      </div>
+
+      <div class="form-group">
+        <label for="level">Level (0–100)</label>
+        <input type="number" id="level" name="level" min="0" max="100" value="<%= skill ? skill.level : '' %>" required>
+      </div>
+
+      <button type="submit" class="btn-primary"><%= skill ? 'Simpan Perubahan' : 'Tambah Skill' %></button>
+    </form>
+  </main>
+
+</div>
+
+</body>
+</html>

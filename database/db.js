@@ -50,6 +50,41 @@ db.exec(`
     sort_order INTEGER DEFAULT 0,
     created_at TEXT DEFAULT (datetime('now'))
   );
+
+  CREATE TABLE IF NOT EXISTS skills (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    category TEXT NOT NULL,
+    level INTEGER NOT NULL DEFAULT 0
+  );
+
+  CREATE TABLE IF NOT EXISTS experiences (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    role TEXT NOT NULL,
+    company TEXT NOT NULL,
+    startDate TEXT NOT NULL,
+    endDate TEXT,
+    description TEXT
+  );
+
+  CREATE TABLE IF NOT EXISTS messages (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    email TEXT NOT NULL,
+    message TEXT NOT NULL,
+    isRead INTEGER NOT NULL DEFAULT 0,
+    createdAt TEXT DEFAULT (datetime('now'))
+  );
+
+  CREATE TABLE IF NOT EXISTS settings (
+    id INTEGER PRIMARY KEY CHECK (id = 1),
+    siteTitle TEXT,
+    tagline TEXT,
+    contactEmail TEXT,
+    github TEXT,
+    linkedin TEXT,
+    maintenanceMode INTEGER NOT NULL DEFAULT 0
+  );
 `);
 
 // ===== SEED DATA AWAL (biar dropdown kategori/teknologi tidak kosong) =====
@@ -61,5 +96,9 @@ seedCategories.forEach((name) => insertCategory.run(name));
 
 const insertTechnology = db.prepare('INSERT OR IGNORE INTO technologies (name) VALUES (?)');
 seedTechnologies.forEach((name) => insertTechnology.run(name));
+
+// Pastikan selalu ada 1 baris default di settings (id = 1)
+db.prepare('INSERT OR IGNORE INTO settings (id, siteTitle, tagline, contactEmail) VALUES (1, ?, ?, ?)')
+  .run('Portfolio Saya', 'Selalu belajar hal baru', '');
 
 module.exports = db;

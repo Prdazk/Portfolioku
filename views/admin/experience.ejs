@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Experience — Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body>
+
+<div class="shell">
+
+  <%- include('../partials/admin-sidebar', { active: 'experience' }) %>
+
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <p class="eyebrow">Experience</p>
+        <h1>Riwayat kerja & organisasi</h1>
+        <p class="topbar-sub">Urutan otomatis berdasarkan tanggal mulai, yang terbaru di atas.</p>
+      </div>
+      <a href="/admin/experience/new" class="btn-primary">+ Tambah Pengalaman</a>
+    </div>
+
+    <div class="timeline-list">
+      <% if (typeof experiences !== 'undefined' && experiences.length > 0) { %>
+        <% experiences.forEach(function(exp) { %>
+          <div class="timeline-card">
+            <div class="timeline-period mono">
+              <%= exp.startDate %> — <%= exp.endDate ? exp.endDate : 'Sekarang' %>
+            </div>
+            <div class="timeline-body">
+              <h3><%= exp.role %></h3>
+              <p class="timeline-company"><%= exp.company %></p>
+              <% if (exp.description) { %>
+                <p class="timeline-desc"><%= exp.description %></p>
+              <% } %>
+            </div>
+            <div class="timeline-actions">
+              <a href="/admin/experience/<%= exp.id %>/edit" class="btn-ghost">Edit</a>
+              <form action="/admin/experience/<%= exp.id %>/delete" method="POST" class="inline-form" onsubmit="return confirm('Hapus riwayat ini?');">
+                <button type="submit" class="btn-ghost btn-danger">Hapus</button>
+              </form>
+            </div>
+          </div>
+        <% }); %>
+      <% } else { %>
+        <div class="empty-state">Belum ada riwayat yang tercatat di sini.</div>
+      <% } %>
+    </div>
+  </main>
+
+</div>
+
+</body>
+</html>

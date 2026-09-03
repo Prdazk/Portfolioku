@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Skills — Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/dashboard.css">
+<link rel="stylesheet" href="/css/skills.css">
+</head>
+<body>
+
+<div class="shell">
+
+  <%- include('../partials/admin-sidebar', { active: 'skills' }) %>
+
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <p class="eyebrow">Skills</p>
+        <h1>Stack yang kamu kuasai</h1>
+        <p class="topbar-sub">Diurutkan per kategori, geser levelnya sesuai seberapa jago kamu sekarang.</p>
+      </div>
+      <a href="/admin/skills/new" class="btn-primary">+ Tambah Skill</a>
+    </div>
+
+    <%
+      let grouped = {};
+      if (typeof skills !== 'undefined') {
+        skills.forEach(function(skill) {
+          if (!grouped[skill.category]) grouped[skill.category] = [];
+          grouped[skill.category].push(skill);
+        });
+      }
+      let categories = Object.keys(grouped);
+    %>
+
+    <% if (categories.length > 0) { %>
+      <div class="skill-groups">
+        <% categories.forEach(function(category) { %>
+          <div class="skill-group">
+            <p class="skill-group-label"><%= category %></p>
+
+            <% grouped[category].forEach(function(skill) { %>
+              <div class="skill-row">
+                <span class="skill-name"><%= skill.name %></span>
+                <div class="level-track">
+                  <div class="level-fill" data-level="<%= skill.level || 0 %>"></div>
+                </div>
+                <span class="level-value"><%= skill.level || 0 %>%</span>
+                <div class="skill-row-actions">
+                  <a href="/admin/skills/<%= skill.id %>/edit">Edit</a>
+                  <form class="delete-skill-form" action="/admin/skills/<%= skill.id %>/delete" method="POST" data-skill-name="<%= skill.name %>">
+                    <button type="submit">Hapus</button>
+                  </form>
+                </div>
+              </div>
+            <% }); %>
+          </div>
+        <% }); %>
+      </div>
+    <% } else { %>
+      <div class="skills-empty">Belum ada skill. Klik "Tambah Skill" buat mulai isi stack kamu.</div>
+    <% } %>
+  </main>
+
+</div>
+
+<script>
+document.querySelectorAll('.delete-skill-form').forEach(function (form) {
+  form.addEventListener('submit', function (e) {
+    const name = form.dataset.skillName || 'skill ini';
+    if (!confirm('Hapus ' + name + '?')) {
+      e.preventDefault();
+    }
+  });
+});
+
+document.querySelectorAll('.level-fill').forEach(function (el) {
+  el.style.setProperty('--level', el.dataset.level);
+});
+</script>
+
+</body>
+</html>

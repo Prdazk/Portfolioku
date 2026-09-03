@@ -34,35 +34,39 @@
   min-height: 100vh;
 }
 
-/* pattern grid diamond — sama kayak homepage, dipasang di DUA sisi biar nyambung */
+/* pattern grid diamond — halus, nyambung di dua sisi */
 .login-left,
 .login-right {
   position: relative;
   background-image:
-    repeating-linear-gradient(45deg, rgba(217,179,130,0.045) 0, rgba(217,179,130,0.045) 1px, transparent 1px, transparent 46px),
-    repeating-linear-gradient(-45deg, rgba(217,179,130,0.045) 0, rgba(217,179,130,0.045) 1px, transparent 1px, transparent 46px);
+    repeating-linear-gradient(45deg, rgba(217,179,130,0.03) 0, rgba(217,179,130,0.03) 1px, transparent 1px, transparent 46px),
+    repeating-linear-gradient(-45deg, rgba(217,179,130,0.03) 0, rgba(217,179,130,0.03) 1px, transparent 1px, transparent 46px);
 }
 
 /* ===== KOLOM KIRI ===== */
 .login-left {
   flex: 1;
   background-color: var(--bg-left);
-  padding: 40px 56px;
+  padding: 48px 64px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  border-right: 1px solid var(--border-color);
 }
 
 .login-left::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 15% 85%, rgba(217,179,130,0.08), transparent 55%);
+  background: radial-gradient(circle at 20% 80%, rgba(217,179,130,0.07), transparent 55%);
   pointer-events: none;
 }
 
 .breadcrumb {
-  position: relative;
+  position: absolute;
+  top: 40px;
+  left: 64px;
   z-index: 1;
   display: flex;
   align-items: center;
@@ -83,8 +87,7 @@
 .left-content {
   position: relative;
   z-index: 1;
-  margin: auto 0;
-  max-width: 440px;
+  max-width: 420px;
 }
 
 .left-content .eyebrow {
@@ -97,7 +100,7 @@
 }
 
 .left-content h1 {
-  font-size: 38px;
+  font-size: 40px;
   font-weight: 800;
   color: var(--text-primary);
   margin: 0 0 16px 0;
@@ -119,14 +122,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 40px;
+  padding: 48px 64px;
 }
 
 .login-right::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 75% 40%, rgba(37,99,235,0.12), transparent 55%);
+  background: radial-gradient(circle at 80% 30%, rgba(37,99,235,0.10), transparent 55%);
   pointer-events: none;
 }
 
@@ -134,7 +137,7 @@
   position: relative;
   z-index: 1;
   width: 100%;
-  max-width: 360px;
+  max-width: 380px;
 }
 
 .login-form {
@@ -248,7 +251,13 @@
 /* ===== RESPONSIVE ===== */
 @media (max-width: 900px) {
   .login-page { flex-direction: column; }
-  .login-left { min-height: 240px; padding: 28px 32px; }
+  .login-left {
+    min-height: 220px;
+    padding: 28px 32px;
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+  }
+  .breadcrumb { position: static; margin-bottom: 24px; }
   .left-content h1 { font-size: 28px; }
   .login-right { padding: 32px 24px; }
 }

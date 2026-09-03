@@ -43,8 +43,10 @@ const db = require('./database/db');
 
 // Import controller & middleware upload untuk Projects
 const projectController = require('./controllers/projectController');
-const categoryController = require('./controllers/categoryController.');
-const technologyController = require('./controllers/technologyController');
+const skillController = require('./controllers/skillController');
+const experienceController = require('./controllers/experienceController');
+const messageController = require('./controllers/messageController');
+const settingController = require('./controllers/settingController');
 const upload = require('./middleware/upload');
 
 
@@ -102,10 +104,8 @@ app.post('/admin/login', async (req, res) => {
 
 app.get('/admin/dashboard', requireAdminLogin, (req, res) => {
   const totalProjects = db.prepare('SELECT COUNT(*) AS count FROM projects').get().count;
-  const totalCategories = db.prepare('SELECT COUNT(*) AS count FROM categories').get().count;
-  const totalTechnologies = db.prepare('SELECT COUNT(*) AS count FROM technologies').get().count;
 
-  res.render('admin/dashboard', { totalProjects, totalCategories, totalTechnologies });
+  res.render('admin/dashboard', { totalProjects });
 });
 
 app.get('/admin/logout', (req, res) => {
@@ -122,18 +122,30 @@ app.get('/admin/projects/:id/edit', requireAdminLogin, projectController.editFor
 app.post('/admin/projects/:id/update', requireAdminLogin, upload.array('images', 10), projectController.update);
 app.post('/admin/projects/:id/delete', requireAdminLogin, projectController.destroy);
 
-   // ===== ROUTE ADMIN - CATEGORIES (CRUD) =====
-   app.get('/admin/categories', requireAdminLogin, categoryController.index);
-   app.post('/admin/categories', requireAdminLogin, categoryController.create);
-   app.post('/admin/categories/:id/update', requireAdminLogin, categoryController.update);
-   app.post('/admin/categories/:id/delete', requireAdminLogin, categoryController.destroy);
 
-   
-// ===== ROUTE ADMIN - TECHNOLOGIES (CRUD) =====
-app.get('/admin/technologies', requireAdminLogin, technologyController.index);
-app.post('/admin/technologies', requireAdminLogin, technologyController.create);
-app.post('/admin/technologies/:id/update', requireAdminLogin, technologyController.update);
-app.post('/admin/technologies/:id/delete', requireAdminLogin, technologyController.destroy);
+// ===== ROUTE ADMIN - SKILLS (CRUD) =====
+app.get('/admin/skills', requireAdminLogin, skillController.index);
+app.get('/admin/skills/new', requireAdminLogin, skillController.newForm);
+app.post('/admin/skills', requireAdminLogin, skillController.create);
+app.get('/admin/skills/:id/edit', requireAdminLogin, skillController.editForm);
+app.post('/admin/skills/:id/update', requireAdminLogin, skillController.update);
+app.post('/admin/skills/:id/delete', requireAdminLogin, skillController.destroy);
+
+// ===== ROUTE ADMIN - EXPERIENCE (CRUD) =====
+app.get('/admin/experience', requireAdminLogin, experienceController.index);
+app.get('/admin/experience/new', requireAdminLogin, experienceController.newForm);
+app.post('/admin/experience', requireAdminLogin, experienceController.create);
+app.get('/admin/experience/:id/edit', requireAdminLogin, experienceController.editForm);
+app.post('/admin/experience/:id/update', requireAdminLogin, experienceController.update);
+app.post('/admin/experience/:id/delete', requireAdminLogin, experienceController.destroy);
+
+// ===== ROUTE ADMIN - MESSAGES =====
+app.get('/admin/messages', requireAdminLogin, messageController.index);
+app.post('/admin/messages/:id/delete', requireAdminLogin, messageController.destroy);
+
+// ===== ROUTE ADMIN - SETTINGS =====
+app.get('/admin/settings', requireAdminLogin, settingController.index);
+app.post('/admin/settings', requireAdminLogin, settingController.update);
 
 // ===== ROUTE TEST DATABASE =====
 app.get('/test-db', (req, res) => {

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Settings — Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/dashboard.css">
+<link rel="stylesheet" href="/css/settings.css">
+</head>
+<body>
+
+<div class="shell">
+
+  <%- include('../partials/admin-sidebar', { active: 'settings' }) %>
+
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <p class="eyebrow">Settings</p>
+        <h1>Pengaturan situs</h1>
+        <p class="topbar-sub">Info dasar yang muncul di header dan footer portfolio.</p>
+      </div>
+    </div>
+
+    <%
+      const s = typeof settings !== 'undefined' && settings ? settings : {};
+      const val = function (v) { return v || ''; };
+    %>
+
+    <div class="settings-layout">
+
+      <form action="/admin/settings" method="POST" class="settings-form" id="settingsForm" novalidate>
+
+        <section class="settings-card">
+          <div class="settings-card-head">
+            <h2>Identitas situs</h2>
+            <p>Judul dan tagline yang tampil di tab browser dan header.</p>
+          </div>
+
+          <div class="form-group">
+            <label for="siteTitle">Judul situs</label>
+            <input type="text" id="siteTitle" name="siteTitle" maxlength="60"
+              value="<%= val(s.siteTitle) %>" placeholder="Nama situs kamu" data-preview="title">
+          </div>
+
+          <div class="form-group">
+            <label for="tagline">Tagline</label>
+            <input type="text" id="tagline" name="tagline" maxlength="100"
+              value="<%= val(s.tagline) %>" placeholder="Satu kalimat singkat tentang kamu" data-preview="tagline" data-counter="taglineCounter">
+            <span class="char-counter" id="taglineCounter">0/100</span>
+          </div>
+        </section>
+
+        <section class="settings-card">
+          <div class="settings-card-head">
+            <h2>Kontak &amp; sosial</h2>
+            <p>Ditampilkan sebagai tautan cepat di footer portfolio.</p>
+          </div>
+
+          <div class="form-group">
+            <label for="contactEmail">Email kontak</label>
+            <div class="input-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 6.5 12 13l9-6.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="3" y="5" width="18" height="14" rx="2"/></svg>
+              <input type="email" id="contactEmail" name="contactEmail"
+                value="<%= val(s.contactEmail) %>" placeholder="kamu@contoh.com" data-preview="email">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="github">GitHub</label>
+              <div class="input-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.2c0 4.5 2.87 8.32 6.84 9.67.5.1.68-.22.68-.5 0-.24-.01-1.04-.01-1.9-2.78.62-3.37-1.22-3.37-1.22-.46-1.2-1.11-1.52-1.11-1.52-.9-.63.07-.62.07-.62 1 .07 1.53 1.05 1.53 1.05.9 1.56 2.36 1.11 2.94.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.32.1-2.75 0 0 .84-.28 2.75 1.05a9.3 9.3 0 0 1 5 0c1.9-1.33 2.74-1.05 2.74-1.05.56 1.43.21 2.49.1 2.75.65.72 1.03 1.63 1.03 2.75 0 3.94-2.35 4.8-4.58 5.06.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .28.18.6.69.5A10.02 10.02 0 0 0 22 12.2C22 6.58 17.52 2 12 2Z"/></svg>
+                <input type="url" id="github" name="github"
+                  value="<%= val(s.github) %>" placeholder="https://github.com/username" data-preview="github">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="linkedin">LinkedIn</label>
+              <div class="input-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.94 6.5a1.94 1.94 0 1 1 0-3.88 1.94 1.94 0 0 1 0 3.88ZM5.06 8.75h3.75V21H5.06V8.75ZM12.94 8.75h3.6v1.68h.05c.5-.9 1.73-1.85 3.56-1.85 3.8 0 4.5 2.36 4.5 5.44V21h-3.75v-6.1c0-1.46-.03-3.33-2.1-3.33-2.1 0-2.42 1.56-2.42 3.22V21h-3.44V8.75Z"/></svg>
+                <input type="url" id="linkedin" name="linkedin"
+                  value="<%= val(s.linkedin) %>" placeholder="https://linkedin.com/in/username" data-preview="linkedin">
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="settings-card settings-card--toggle" id="maintenanceCard">
+          <div class="settings-card-head">
+            <h2>Mode maintenance</h2>
+            <p>Saat aktif, pengunjung publik melihat halaman pemeliharaan, bukan portfolio.</p>
+          </div>
+
+          <label class="switch-row" for="maintenanceMode">
+            <span class="switch-row-text">
+              <span class="switch-row-label">Situs dalam mode maintenance</span>
+              <span class="switch-row-status" id="maintenanceStatus">Nonaktif — situs tampil normal</span>
+            </span>
+            <span class="switch">
+              <input type="checkbox" id="maintenanceMode" name="maintenanceMode" data-preview="maintenance"
+                <%= s.maintenanceMode ? 'checked' : '' %>>
+              <span class="switch-track"><span class="switch-thumb"></span></span>
+            </span>
+          </label>
+        </section>
+
+        <div class="settings-actionbar" id="actionBar">
+          <span class="settings-actionbar-status" id="dirtyStatus">Semua perubahan tersimpan</span>
+          <div class="settings-actionbar-buttons">
+            <button type="reset" class="btn-ghost" id="resetBtn">Batalkan</button>
+            <button type="submit" class="btn-primary" id="saveBtn">Simpan Perubahan</button>
+          </div>
+        </div>
+      </form>
+
+      <aside class="settings-preview">
+        <p class="settings-preview-label">Pratinjau langsung</p>
+
+        <div class="browser-mock">
+          <div class="browser-mock-bar">
+            <span class="browser-dot"></span>
+            <span class="browser-dot"></span>
+            <span class="browser-dot"></span>
+            <div class="browser-tab">
+              <span class="browser-favicon" id="previewFavicon"></span>
+              <span id="previewTabTitle">Judul situs</span>
+            </div>
+          </div>
+
+          <div class="browser-mock-body" id="previewBody">
+            <div class="preview-maintenance" id="previewMaintenanceBanner">
+              Situs sedang dalam pemeliharaan
+            </div>
+
+            <div class="preview-header">
+              <span class="preview-mark" id="previewMark">?</span>
+              <div>
+                <p class="preview-title" id="previewTitle">Judul situs</p>
+                <p class="preview-tagline" id="previewTagline">Tagline akan muncul di sini</p>
+              </div>
+            </div>
+
+            <div class="preview-footer">
+              <span class="preview-chip" id="previewEmail" data-empty="true">Email belum diisi</span>
+              <span class="preview-chip" id="previewGithub" data-empty="true">GitHub belum diisi</span>
+              <span class="preview-chip" id="previewLinkedin" data-empty="true">LinkedIn belum diisi</span>
+            </div>
+          </div>
+        </div>
+
+        <p class="settings-preview-hint">Tampilan ini mensimulasikan header &amp; footer portfolio publik kamu.</p>
+      </aside>
+
+    </div>
+  </main>
+
+</div>
+
+<script>
+(function () {
+  const form = document.getElementById('settingsForm');
+  const actionBar = document.getElementById('actionBar');
+  const dirtyStatus = document.getElementById('dirtyStatus');
+  const resetBtn = document.getElementById('resetBtn');
+
+  const maintenanceInput = document.getElementById('maintenanceMode');
+  const maintenanceCard = document.getElementById('maintenanceCard');
+  const maintenanceStatus = document.getElementById('maintenanceStatus');
+
+  const titleInput = document.getElementById('siteTitle');
+  const taglineInput = document.getElementById('tagline');
+  const taglineCounter = document.getElementById('taglineCounter');
+  const emailInput = document.getElementById('contactEmail');
+  const githubInput = document.getElementById('github');
+  const linkedinInput = document.getElementById('linkedin');
+
+  const previewTabTitle = document.getElementById('previewTabTitle');
+  const previewFavicon = document.getElementById('previewFavicon');
+  const previewMark = document.getElementById('previewMark');
+  const previewTitle = document.getElementById('previewTitle');
+  const previewTagline = document.getElementById('previewTagline');
+  const previewEmail = document.getElementById('previewEmail');
+  const previewGithub = document.getElementById('previewGithub');
+  const previewLinkedin = document.getElementById('previewLinkedin');
+  const previewBanner = document.getElementById('previewMaintenanceBanner');
+
+  let initialState = new FormData(form);
+
+  function serialize(fd) {
+    return JSON.stringify([...fd.entries()]);
+  }
+
+  function checkDirty() {
+    const current = new FormData(form);
+    const isDirty = serialize(current) !== serialize(initialState);
+    actionBar.classList.toggle('is-dirty', isDirty);
+    dirtyStatus.textContent = isDirty ? 'Ada perubahan belum disimpan' : 'Semua perubahan tersimpan';
+  }
+
+  function updateHost(url) {
+    if (!url) return '';
+    try {
+      return new URL(url).hostname.replace('www.', '');
+    } catch (e) {
+      return url;
+    }
+  }
+
+  function updatePreview() {
+    const title = titleInput.value.trim() || 'Judul situs';
+    const tagline = taglineInput.value.trim() || 'Tagline akan muncul di sini';
+    const email = emailInput.value.trim();
+    const github = githubInput.value.trim();
+    const linkedin = linkedinInput.value.trim();
+
+    previewTabTitle.textContent = title;
+    previewTitle.textContent = title;
+    previewTagline.textContent = tagline;
+    previewMark.textContent = title.trim().charAt(0).toUpperCase() || '?';
+    previewFavicon.style.background = title ? 'var(--accent)' : 'var(--line)';
+
+    taglineCounter.textContent = taglineInput.value.length + '/100';
+
+    if (email) {
+      previewEmail.textContent = email;
+      previewEmail.dataset.empty = 'false';
+    } else {
+      previewEmail.textContent = 'Email belum diisi';
+      previewEmail.dataset.empty = 'true';
+    }
+
+    if (github) {
+      previewGithub.textContent = updateHost(github) || 'GitHub';
+      previewGithub.dataset.empty = 'false';
+    } else {
+      previewGithub.textContent = 'GitHub belum diisi';
+      previewGithub.dataset.empty = 'true';
+    }
+
+    if (linkedin) {
+      previewLinkedin.textContent = updateHost(linkedin) || 'LinkedIn';
+      previewLinkedin.dataset.empty = 'false';
+    } else {
+      previewLinkedin.textContent = 'LinkedIn belum diisi';
+      previewLinkedin.dataset.empty = 'true';
+    }
+
+    const isMaintenance = maintenanceInput.checked;
+    previewBanner.classList.toggle('is-visible', isMaintenance);
+    maintenanceCard.classList.toggle('is-active', isMaintenance);
+    maintenanceStatus.textContent = isMaintenance
+      ? 'Aktif — pengunjung melihat halaman pemeliharaan'
+      : 'Nonaktif — situs tampil normal';
+  }
+
+  form.addEventListener('input', function () {
+    updatePreview();
+    checkDirty();
+  });
+
+  form.addEventListener('change', function () {
+    updatePreview();
+    checkDirty();
+  });
+
+  resetBtn.addEventListener('click', function () {
+    window.setTimeout(function () {
+      updatePreview();
+      checkDirty();
+    }, 0);
+  });
+
+  form.addEventListener('submit', function () {
+    initialState = new FormData(form);
+  });
+
+  updatePreview();
+  checkDirty();
+})();
+</script>
+
+</body>
+</html>

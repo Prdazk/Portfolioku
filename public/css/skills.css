@@ -1,0 +1,195 @@
+/* ===== Buttons ===== */
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #c9793c;
+  color: #14140f;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: none;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.08s ease;
+}
+
+.btn-primary:hover { background: #d68a4d; }
+.btn-primary:active { transform: scale(0.97); }
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  color: #b8b3a4;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 14px;
+  padding: 9px 16px;
+  border-radius: 8px;
+  border: 1px solid #2a271f;
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.btn-ghost:hover {
+  border-color: #c9793c;
+  color: #ece8de;
+}
+
+/* ===== Form (skill-form, experience-form) ===== */
+
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  max-width: 480px;
+  margin-top: 8px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 13px;
+  color: #8a8578;
+}
+
+.form-group input,
+.form-group textarea {
+  background: #17150f;
+  border: 1px solid #2a271f;
+  border-radius: 8px;
+  padding: 11px 14px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 14.5px;
+  color: #ece8de;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: #c9793c;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 90px;
+  font-family: inherit;
+}
+
+.settings-form .btn-primary {
+  align-self: flex-start;
+  margin-top: 8px;
+}
+
+/* ===== Skills list ===== */
+
+.skill-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  margin-top: 20px;
+}
+
+.skill-group-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #8a8578;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 12px;
+}
+
+.skill-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid #2a271f;
+}
+
+.skill-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 14.5px;
+  color: #ece8de;
+  min-width: 140px;
+  flex-shrink: 0;
+}
+
+.level-track {
+  flex: 1;
+  height: 8px;
+  background: #17150f;
+  border: 1px solid #2a271f;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.level-fill {
+  --level: 0;
+  width: calc(var(--level) * 1%);
+  height: 100%;
+  background: #c9793c;
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+
+.level-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: #b8b3a4;
+  min-width: 40px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.skill-row-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.skill-row-actions a {
+  font-size: 13px;
+  color: #b8b3a4;
+  text-decoration: none;
+}
+
+.skill-row-actions a:hover {
+  color: #c9793c;
+}
+
+.skill-row-actions form {
+  display: inline;
+}
+
+.skill-row-actions button {
+  background: transparent;
+  border: none;
+  color: #b8443d;
+  font-size: 13px;
+  font-family: 'Space Grotesk', sans-serif;
+  cursor: pointer;
+  padding: 0;
+}
+
+.skill-row-actions button:hover {
+  color: #d6564d;
+}
+
+.skills-empty {
+  padding: 40px 0;
+  text-align: center;
+  color: #8a8578;
+  font-size: 14px;
+}
