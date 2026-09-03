@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kelola Projects</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/dashboard.css">
+<link rel="stylesheet" href="/css/projects.css">
+</head>
+<body>
+
+<div class="shell">
+
+  <%- include('../partials/admin-sidebar', { active: 'projects' }) %>
+
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <p class="eyebrow">Kelola Konten</p>
+        <h1>Projects</h1>
+        <p class="topbar-sub"><%= projects.length %> project ditampilkan di portfolio kamu.</p>
+      </div>
+      <a href="/admin/projects/new" class="btn btn-primary">+ Tambah Project</a>
+    </div>
+
+    <!-- ===== TOOLBAR: SEARCH & FILTER ===== -->
+    <div class="project-toolbar">
+      <div class="toolbar-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="m21 21-4.35-4.35"></path>
+        </svg>
+        <input type="text" id="searchInput" placeholder="Cari judul project...">
+      </div>
+
+      <div class="toolbar-filters">
+        <select id="filterType">
+          <option value="">Semua Tipe</option>
+          <option value="web">&#127760; Web</option>
+          <option value="iot">&#128268; IoT</option>
+          <option value="ai">&#129302; AI</option>
+        </select>
+
+        <select id="filterStatus">
+          <option value="">Semua Status</option>
+          <option value="draft">Draft</option>
+          <option value="in_progress">On Progress</option>
+          <option value="published">Selesai / Published</option>
+        </select>
+      </div>
+    </div>
+
+    <% if (projects.length === 0) { %>
+      <div class="empty-state">
+        <p>Belum ada project. Klik "Tambah Project" untuk mulai menambahkan.</p>
+      </div>
+    <% } else { %>
+      <div class="project-list" id="projectList">
+        <% projects.forEach(function(project) { %>
+          <div class="project-row"
+               data-type="<%= project.type || '' %>"
+               data-status="<%= project.status || 'draft' %>"
+               data-search="<%= project.title.toLowerCase() %>">
+
+            <div class="project-thumb">
+              <% if (project.image) { %>
+                <img src="<%= project.image %>" alt="<%= project.title %>">
+              <% } else { %>
+                <span class="thumb-placeholder">&#9670;</span>
+              <% } %>
+              <% if (project.images && project.images.length > 1) { %>
+                <span class="thumb-count-badge"><%= project.images.length %> foto</span>
+              <% } %>
+              <% if (project.featured) { %>
+                <span class="thumb-featured-badge" title="Featured">&#9733;</span>
+              <% } %>
+            </div>
+
+            <div class="project-info">
+              <div class="project-title-row">
+                <h3><%= project.title %></h3>
+                <% if (project.type === 'web') { %>
+                  <span class="type-badge type-badge-web">&#127760; Web</span>
+                <% } else if (project.type === 'iot') { %>
+                  <span class="type-badge type-badge-iot">&#128268; IoT</span>
+                <% } else if (project.type === 'ai') { %>
+                  <span class="type-badge type-badge-ai">&#129302; AI</span>
+                <% } %>
+              </div>
+
+              <p class="project-meta">
+                <span class="meta-label">Kategori:</span>
+                <% if (project.category_name) { %>
+                  <span class="tag"><%= project.category_name %></span>
+                <% } else { %>
+                  <span class="tag tag-muted">Tanpa kategori</span>
+                <% } %>
+
+                <% if (project.status === 'published') { %>
+                  <span class="status-badge status-published">Published</span>
+                <% } else if (project.status === 'in_progress') { %>
+                  <span class="status-badge status-progress">On Progress</span>
+                <% } else { %>
+                  <span class="status-badge status-draft">Draft</span>
+                <% } %>
+              </p>
+
+              <% if (project.short_description || project.description) { %>
+                <p class="project-desc"><%= project.short_description || project.description %></p>
+              <% } %>
+
+              <% if (project.updated_at) { %>
+                <p class="project-updated">Diperbarui: <%= new Date(project.updated_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) %></p>
+              <% } %>
+            </div>
+
+            <div class="project-actions">
+            <button type="button"
+                    class="btn btn-sm btn-icon btn-view js-view-project"
+                    title="Lihat"
+                    aria-label="Lihat"
+                    data-title="<%= project.title %>"
+                    data-category="<%= project.category_name || '' %>"
+                    data-type="<%= project.type || '' %>"
+                    data-status="<%= project.status || 'draft' %>"
+                    data-description="<%= project.description || '' %>"
+                    data-images='<%= JSON.stringify(
+                      (project.images && project.images.length > 0)
+                        ? project.images
+                        : (project.image ? [project.image] : [])
+                    ) %>'>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+
+            <a href="/admin/projects/<%= project.id %>/edit" class="btn btn-sm btn-icon" title="Edit" aria-label="Edit">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 3a2.83 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+              </svg>
+            </a>
+
+            <button type="button"
+                    class="btn btn-sm btn-icon btn-danger js-delete-project"
+                    title="Hapus"
+                    aria-label="Hapus"
+                    data-action="/admin/projects/<%= project.id %>/delete">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path>
+                <path d="M10 11v6"></path>
+                <path d="M14 11v6"></path>
+                <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"></path>
+              </svg>
+            </button>
+          </div>
+          </div>
+        <% }); %>
+      </div>
+
+      <p class="empty-filter-state" id="emptyFilterState" style="display:none;">
+        Tidak ada project yang cocok dengan pencarian/filter.
+      </p>
+    <% } %>
+  </main>
+
+</div>
+
+<!-- Modal Lihat Project (dengan gallery kalau gambar > 1) -->
+<div class="modal-overlay" id="viewModalOverlay">
+  <div class="modal-box">
+    <button type="button" class="modal-close" id="modalCloseBtn">&times;</button>
+    <div class="modal-thumb" id="modalThumb">
+      <button type="button" class="modal-nav modal-nav-prev" id="modalPrevBtn">&#8592;</button>
+      <img id="modalImage" src="" alt="">
+      <span class="thumb-placeholder" id="modalPlaceholder">&#9670;</span>
+      <button type="button" class="modal-nav modal-nav-next" id="modalNextBtn">&#8594;</button>
+      <span class="modal-image-counter" id="modalImageCounter"></span>
+    </div>
+    <div class="modal-body">
+      <div class="modal-title-row">
+        <h2 id="modalTitle"></h2>
+        <span class="type-badge" id="modalTypeBadge"></span>
+      </div>
+      <p class="modal-status" id="modalStatus"></p>
+      <p id="modalDescription" class="modal-desc"></p>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Konfirmasi Hapus -->
+<div class="modal-overlay" id="deleteModalOverlay">
+  <div class="modal-box modal-box-confirm">
+    <button type="button" class="modal-close" id="deleteModalCloseBtn">&times;</button>
+        <div class="modal-body">
+      <div class="modal-warn-icon">&#9888;</div>
+      <h2>Hapus Project?</h2>
+      <p class="modal-desc">
+        Tindakan ini tidak bisa dibatalkan.
+      </p>
+      <form id="deleteProjectForm" method="POST" action="">
+        <div class="modal-confirm-actions">
+          <button type="button" class="btn btn-sm" id="deleteCancelBtn">Batal</button>
+          <button type="submit" class="btn btn-sm btn-danger-solid">Ya, Hapus</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // ===== SEARCH & FILTER =====
+    const searchInput = document.getElementById('searchInput');
+    const filterType = document.getElementById('filterType');
+    const filterStatus = document.getElementById('filterStatus');
+    const projectList = document.getElementById('projectList');
+    const emptyFilterState = document.getElementById('emptyFilterState');
+
+    function applyFilters() {
+      if (!projectList) return;
+      const rows = projectList.querySelectorAll('.project-row');
+      const searchTerm = (searchInput.value || '').toLowerCase().trim();
+      const typeVal = filterType.value;
+      const statusVal = filterStatus.value;
+      let visibleCount = 0;
+
+      rows.forEach(function (row) {
+        const matchesSearch = row.dataset.search.includes(searchTerm);
+        const matchesType = !typeVal || row.dataset.type === typeVal;
+        const matchesStatus = !statusVal || row.dataset.status === statusVal;
+        const show = matchesSearch && matchesType && matchesStatus;
+        row.style.display = show ? '' : 'none';
+        if (show) visibleCount++;
+      });
+
+      if (emptyFilterState) {
+        emptyFilterState.style.display = visibleCount === 0 ? 'block' : 'none';
+      }
+    }
+
+    if (searchInput) searchInput.addEventListener('input', applyFilters);
+    if (filterType) filterType.addEventListener('change', applyFilters);
+    if (filterStatus) filterStatus.addEventListener('change', applyFilters);
+
+    // ===== MODAL LIHAT (dengan gallery) =====
+    const viewOverlay = document.getElementById('viewModalOverlay');
+    const img = document.getElementById('modalImage');
+    const placeholder = document.getElementById('modalPlaceholder');
+    const titleEl = document.getElementById('modalTitle');
+    const typeBadgeEl = document.getElementById('modalTypeBadge');
+    const statusEl = document.getElementById('modalStatus');
+    const descEl = document.getElementById('modalDescription');
+    const prevBtn = document.getElementById('modalPrevBtn');
+    const nextBtn = document.getElementById('modalNextBtn');
+    const counterEl = document.getElementById('modalImageCounter');
+
+    let currentImages = [];
+    let currentImageIndex = 0;
+
+    const typeLabels = {
+      web: { label: '&#127760; Web', className: 'type-badge-web' },
+      iot: { label: '&#128268; IoT', className: 'type-badge-iot' },
+      ai: { label: '&#129302; AI', className: 'type-badge-ai' }
+    };
+
+    const statusLabels = {
+      draft: 'Draft',
+      in_progress: 'On Progress',
+      published: 'Selesai / Published'
+    };
+
+    function renderModalImage(animate) {
+  if (currentImages.length === 0) {
+    img.style.display = 'none';
+    placeholder.style.display = 'flex';
+    counterEl.style.display = 'none';
+    prevBtn.style.display = 'none';
+    nextBtn.style.display = 'none';
+    return;
+  }
+
+  function applyImage() {
+    img.src = currentImages[currentImageIndex];
+    img.style.display = 'block';
+    placeholder.style.display = 'none';
+
+    if (currentImages.length > 1) {
+      counterEl.textContent = (currentImageIndex + 1) + ' / ' + currentImages.length;
+      counterEl.style.display = 'block';
+      prevBtn.style.display = 'flex';
+      nextBtn.style.display = 'flex';
+    } else {
+      counterEl.style.display = 'none';
+      prevBtn.style.display = 'none';
+      nextBtn.style.display = 'none';
+    }
+
+    requestAnimationFrame(function () {
+      img.classList.remove('is-fading');
+    });
+  }
+
+  if (animate) {
+    img.classList.add('is-fading');
+    setTimeout(applyImage, 200);
+  } else {
+    applyImage();
+  }
+}
+
+    function openViewModal(data) {
+  titleEl.textContent = data.title;
+  descEl.textContent = data.description || 'Tidak ada deskripsi.';
+
+  const typeInfo = typeLabels[data.type];
+  if (typeInfo) {
+    typeBadgeEl.innerHTML = typeInfo.label;
+    typeBadgeEl.className = 'type-badge ' + typeInfo.className;
+    typeBadgeEl.style.display = 'inline-flex';
+  } else {
+    typeBadgeEl.style.display = 'none';
+  }
+
+  statusEl.textContent = statusLabels[data.status] || 'Draft';
+  statusEl.className = 'modal-status modal-status-' + (data.status || 'draft');
+
+  currentImages = data.images || [];
+  currentImageIndex = 0;
+  renderModalImage();
+
+  viewOverlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+
+  requestAnimationFrame(function () {
+    requestAnimationFrame(function () {
+      viewOverlay.classList.add('is-visible');
+    });
+  });
+}
+
+function closeViewModal() {
+  viewOverlay.classList.remove('is-visible');
+  document.body.style.overflow = '';
+
+  setTimeout(function () {
+    viewOverlay.classList.remove('active');
+  }, 250);
+}
+
+      prevBtn.addEventListener('click', function () {
+      if (currentImages.length === 0) return;
+      currentImageIndex = (currentImageIndex - 1 + currentImages.length) % currentImages.length;
+      renderModalImage(true);
+    });
+
+    nextBtn.addEventListener('click', function () {
+      if (currentImages.length === 0) return;
+      currentImageIndex = (currentImageIndex + 1) % currentImages.length;
+      renderModalImage(true);
+    });
+
+    document.querySelectorAll('.js-view-project').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        let images = [];
+        try {
+          images = JSON.parse(btn.dataset.images || '[]');
+        } catch (e) {
+          images = [];
+        }
+
+        openViewModal({
+          title: btn.dataset.title,
+          description: btn.dataset.description,
+          type: btn.dataset.type,
+          status: btn.dataset.status,
+          images: images
+        });
+      });
+    });
+
+    document.getElementById('modalCloseBtn').addEventListener('click', closeViewModal);
+    viewOverlay.addEventListener('click', function (e) {
+      if (e.target === viewOverlay) closeViewModal();
+    });
+
+    // ===== MODAL HAPUS =====
+    const deleteOverlay = document.getElementById('deleteModalOverlay');
+    const deleteForm = document.getElementById('deleteProjectForm');
+
+    function openDeleteModal(action) {
+      deleteForm.setAttribute('action', action);
+      deleteOverlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          deleteOverlay.classList.add('is-visible');
+        });
+      });
+    }
+
+function closeDeleteModal() {
+  deleteOverlay.classList.remove('is-visible');
+  document.body.style.overflow = '';
+
+  setTimeout(function () {
+    deleteOverlay.classList.remove('active');
+  }, 250);
+}
+
+    document.querySelectorAll('.js-delete-project').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    openDeleteModal(btn.dataset.action);
+  });
+});
+
+    document.getElementById('deleteModalCloseBtn').addEventListener('click', closeDeleteModal);
+    document.getElementById('deleteCancelBtn').addEventListener('click', closeDeleteModal);
+    deleteOverlay.addEventListener('click', function (e) {
+      if (e.target === deleteOverlay) closeDeleteModal();
+    });
+
+    // ===== ESC UNTUK TUTUP MODAL AKTIF =====
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        closeViewModal();
+        closeDeleteModal();
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body>
+
+<div class="shell">
+
+  <%- include('../partials/admin-sidebar', { active: 'dashboard' }) %>
+
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <p class="eyebrow">Admin Access</p>
+        <h1>Selamat datang kembali</h1>
+        <p class="topbar-sub">Kelola project, kategori, dan tech stack portfolio kamu.</p>
+      </div>
+    </div>
+
+    <div class="stat-strip">
+      <div class="stat-card">
+        <div class="stat-num mono"><%= typeof totalProjects !== 'undefined' ? totalProjects : '-' %></div>
+        <div class="stat-label">Total Project</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num mono"><%= typeof totalCategories !== 'undefined' ? totalCategories : '-' %></div>
+        <div class="stat-label">Kategori</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num mono"><%= typeof totalTechnologies !== 'undefined' ? totalTechnologies : '-' %></div>
+        <div class="stat-label">Teknologi</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-status-value mono">
+          <span class="status-dot <%= typeof siteStatus !== 'undefined' && siteStatus === 'online' ? 'online' : 'offline' %>"></span>
+          <%= typeof siteStatus !== 'undefined' ? (siteStatus === 'online' ? 'Online' : 'Offline') : 'Online' %>
+        </div>
+        <div class="stat-label">Status Website</div>
+      </div>
+    </div>
+  </main>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Portfolio - About</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/about.css">
+</head>
+<body>
+
+  <%- include('partials/navbar', { page: 'about' }) %>
+
+  <section class="about-page">
+    <h2 class="about-heading">About</h2>
+
+    <div class="about-content">
+      <div class="about-photo">
+        <img src="/css/images/Profil.png" alt="Foto profil">
+      </div>
+
+      <div class="about-text">
+        <p>
+          Saya Laduni Prada, seorang Developer yang berdedikasi dengan hasrat kuat pada
+          Web, AI, dan IoT. Sejak 2023, saya telah fokus pada pembangunan solusi
+          inovatif yang menjembatani antarmuka pengguna yang mulus dengan kekuatan
+          kecerdasan buatan dan konektivitas perangkat.
+        </p>
+
+        <p>
+          Visi saya adalah menciptakan teknologi yang memberdayakan dan
+          mempermudah kehidupan sehari-hari.
+        </p>
+
+        <h3>Latar Belakang &amp; Pengalaman</h3>
+
+        <ul class="about-list">
+          <li><span class="about-icon">🎓</span> Sarjana Teknik Informatika, [Nama Universitas] (2020-2024)</li>
+          <li><span class="about-icon">🛠️</span> Magang di Perusahaan Tech Terkemuka - Proyek IoT</li>
+          <li><span class="about-icon">💻</span> Lebih dari 5 Proyek Web/AI yang Selesai</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>&copy; 2026 Laduni Prada</p>
+  </footer>
+
+</body>
+</html>

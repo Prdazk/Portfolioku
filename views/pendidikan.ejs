@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio - Pendidikan</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/pendidikan.css">
+</head>
+<body>
+
+  <%- include('partials/navbar', { page: 'pendidikan' }) %>
+
+  <section class="pendidikan-section">
+    <h2 class="pendidikan-heading">Pendidikan</h2>
+    <p class="pendidikan-intro">Riwayat pendidikan formal yang membentuk cara saya berpikir dan bekerja.</p>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <span class="timeline-year">2024 — Sekarang</span>
+        <div class="timeline-marker"><span class="timeline-dot"></span></div>
+        <div class="timeline-content">
+          <h3>Nama Universitas</h3>
+          <p class="timeline-degree">S1 Teknik Informatika</p>
+          <p class="timeline-desc">Deskripsi singkat tentang fokus studi, organisasi, atau pencapaian selama menempuh pendidikan ini.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <span class="timeline-year">2021 — 2024</span>
+        <div class="timeline-marker"><span class="timeline-dot"></span></div>
+        <div class="timeline-content">
+          <h3>Nama SMA/SMK</h3>
+          <p class="timeline-degree">Jurusan Rekayasa Perangkat Lunak</p>
+          <p class="timeline-desc">Deskripsi singkat, misalnya proyek akhir atau kompetisi yang pernah diikuti.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>&copy; 2026 Laduni Prada</p>
+  </footer>
+
+</body>
+</html>

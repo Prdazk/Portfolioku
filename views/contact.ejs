@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Portfolio - Contact</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/contact.css">
+</head>
+<body>
+
+  <%- include('partials/navbar', { page: 'contact' }) %>
+
+  <section class="contact-page">
+    <div class="contact-card">
+
+      <div class="contact-left">
+        <div class="contact-globe">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M3 12h18"></path>
+            <path d="M12 3c2.5 2.5 3.8 5.7 3.8 9s-1.3 6.5-3.8 9c-2.5-2.5-3.8-5.7-3.8-9s1.3-6.5 3.8-9z"></path>
+          </svg>
+        </div>
+        <h3>Get in Touch</h3>
+        <p class="contact-subtitle">Laduni Prada - Web, AI, IoT Developer</p>
+
+        <a href="https://github.com/Prdazk" target="_blank" rel="noopener" class="contact-pill">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.39.6.11.82-.26.82-.58v-2.02c-3.34.73-4.04-1.6-4.04-1.6-.55-1.4-1.34-1.77-1.34-1.77-1.1-.75.08-.74.08-.74 1.2.09 1.84 1.24 1.84 1.24 1.08 1.85 2.83 1.32 3.52 1 .1-.78.42-1.32.77-1.62-2.67-.3-5.47-1.34-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.31-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.25 2.87.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.6-2.8 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58C20.56 21.8 24 17.29 24 12c0-6.63-5.37-12-12-12z"></path>
+          </svg>
+          GitHub Profile: Prdazk
+        </a>
+
+        <div class="contact-info-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+            <path d="M2 7l10 6 10-6"></path>
+          </svg>
+          Email: laduniprada4@gmail.com
+        </div>
+        <div class="contact-info-item">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+            <path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zM8.34 18.34H5.67V9.75h2.67v8.59zM7 8.6a1.55 1.55 0 1 1 0-3.1 1.55 1.55 0 0 1 0 3.1zm11.34 9.74h-2.67v-4.5c0-1.07-.02-2.45-1.49-2.45-1.49 0-1.72 1.16-1.72 2.37v4.58h-2.67V9.75h2.56v1.17h.04c.36-.68 1.23-1.4 2.53-1.4 2.71 0 3.2 1.78 3.2 4.1v4.72z"></path>
+          </svg>
+          LinkedIn: laduni-prada
+        </div>
+        <div class="contact-info-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M12 21s-7-6.1-7-11a7 7 0 0 1 14 0c0 4.9-7 11-7 11z"></path>
+            <circle cx="12" cy="10" r="2.5"></circle>
+          </svg>
+          Based in Indonesia
+        </div>
+      </div>
+
+      <div class="contact-right">
+        <form class="contact-form" action="/contact" method="POST">
+          <input type="text" name="name" placeholder="Name" required>
+          <input type="email" name="email" placeholder="Email Address" required>
+          <input type="text" name="subject" placeholder="Subject">
+          <textarea name="message" rows="5" placeholder="Message" required></textarea>
+          <button type="submit">Send Message &#10148;</button>
+        </form>
+      </div>
+
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>&copy; 2026 Laduni Prada</p>
+  </footer>
+
+</body>
+</html>

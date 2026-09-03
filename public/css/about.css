@@ -1,0 +1,78 @@
+/* ===== About Page ===== */
+
+.about-page {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 56px 40px 100px;
+}
+
+.about-heading {
+  text-align: center;
+  font-size: 32px;
+  font-weight: 700;
+  color: #d9a44a;
+  margin: 0 0 60px;
+}
+
+.about-content {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 60px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .about-content {
+    grid-template-columns: 1fr;
+  }
+}
+
+.about-photo {
+  position: relative;
+}
+
+.about-photo img {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+  -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%),
+                       linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to bottom, black 60%, transparent 100%),
+              linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%);
+  mask-composite: intersect;
+}
+
+.about-text p {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #d8dbd3;
+  margin: 0 0 24px;
+}
+
+.about-text h3 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #d9a44a;
+  margin: 40px 0 20px;
+}
+
+.about-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.about-list li {
+  font-size: 16px;
+  color: #d8dbd3;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.about-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+}

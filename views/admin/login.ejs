@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Login</title>
+  <link rel="stylesheet" href="/css/login.css">
+</head>
+<body class="login-body">
+
+  <div class="login-page">
+
+    <!-- KIRI -->
+    <div class="login-left">
+      <div class="breadcrumb"><span class="dot"></span>Portfolio / Admin</div>
+
+      <div class="left-content">
+        <p class="eyebrow">Admin Access</p>
+        <h1>Login ke Dashboard</h1>
+        <p class="left-subtitle">Kelola portfolio, project, dan tech stack kamu di sini.</p>
+      </div>
+    </div>
+
+    <!-- KANAN -->
+    <div class="login-right">
+      <div class="login-form-wrap">
+
+        <% if (error) { %>
+          <p class="error-msg"><%= error %></p>
+        <% } %>
+
+        <form action="/admin/login" method="POST" class="login-form">
+          <div class="input-group">
+            <label for="email">Email/Akun Pengguna</label>
+            <input type="text" id="email" name="email" placeholder="" required>
+          </div>
+
+          <div class="input-group">
+            <label for="password">Password</label>
+            <div class="password-wrap">
+              <input type="password" id="password" name="password" placeholder="" required>
+              <span class="toggle-password" id="togglePassword">👁</span>
+            </div>
+          </div>
+
+          <button type="submit" class="login-btn">Masuk</button>
+        </form>
+
+        <a href="/" class="back-link">&larr; Kembali ke Beranda</a>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordInput = document.getElementById('password');
+
+    togglePassword.addEventListener('click', () => {
+      const isPassword = passwordInput.type === 'password';
+      passwordInput.type = isPassword ? 'text' : 'password';
+      togglePassword.style.opacity = isPassword ? '1' : '0.6';
+    });
+  </script>
+
+</body>
+</html>

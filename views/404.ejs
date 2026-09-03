@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>404 - Halaman Tidak Ditemukan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: #0a0e0d;
+      color: #e8e8e8;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+    }
+    .code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 90px;
+      font-weight: 700;
+      color: #e8a94c;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    h1 {
+      font-size: 28px;
+      margin-bottom: 12px;
+    }
+    p {
+      color: #9a9a9a;
+      margin-bottom: 28px;
+      font-size: 15px;
+    }
+    .path {
+      font-family: 'JetBrains Mono', monospace;
+      background: #161b1a;
+      padding: 3px 10px;
+      border-radius: 6px;
+      color: #e8a94c;
+      font-size: 13px;
+    }
+    a.home-btn {
+      display: inline-block;
+      background: #e8a94c;
+      color: #1a1a1a;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 12px 28px;
+      border-radius: 8px;
+      transition: opacity 0.2s;
+    }
+    a.home-btn:hover { opacity: 0.85; }
+  </style>
+</head>
+<body>
+  <div>
+    <div class="code">404</div>
+    <h1>Halaman Tidak Ditemukan</h1>
+    <p>Halaman <span class="path"><%= url %></span> tidak tersedia atau sudah dipindahkan.</p>
+    <a href="/" class="home-btn">Kembali ke Beranda</a>
+  </div>
+</body>
+</html>

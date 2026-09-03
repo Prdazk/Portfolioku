@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Portfolio - Projects</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/projects-public.css">
+</head>
+<body>
+
+  <%- include('partials/navbar', { page: 'projects' }) %>
+
+  <section class="page-content">
+
+    <% if (projects.length === 0) { %>
+      <p class="placeholder-text">Belum ada project untuk ditampilkan.</p>
+    <% } else { %>
+      <div class="projects-grid">
+        <% projects.forEach(function(project) { %>
+          <div class="project-card">
+            <div class="project-card-thumb">
+              <% if (project.thumbnail) { %>
+                <img src="<%= project.thumbnail %>" alt="<%= project.title %>">
+              <% } else { %>
+                <span class="thumb-placeholder">&#9670;</span>
+              <% } %>
+            </div>
+            <div class="project-card-body">
+              <% if (project.category_name) { %>
+                <p class="project-card-category"><%= project.category_name %></p>
+              <% } %>
+              <h3 class="project-card-title"><%= project.title %></h3>
+              <% if (project.description) { %>
+                <p class="project-card-desc"><%= project.description %></p>
+              <% } %>
+              <div class="project-card-links">
+                <% if (project.live_url) { %>
+                  <button type="button"
+                    class="js-preview-project"
+                    data-title="<%= project.title %>"
+                    data-description="<%= project.description || '' %>"
+                    data-live="<%= project.live_url %>"
+                    data-github="<%= project.github_url || '' %>"
+                    data-thumbnail="<%= project.thumbnail || '' %>"
+                    data-technologies='<%= JSON.stringify(project.technologies || []) %>'>
+                    View Live
+                  </button>
+                <% } %>
+                <% if (project.github_url) { %>
+                  <a href="<%= project.github_url %>" target="_blank" rel="noopener">GitHub Repo</a>
+                <% } %>
+              </div>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    <% } %>
+  </section>
+
+  <footer class="footer">
+    <p>&copy; 2026 [Nama Kamu]</p>
+  </footer>
+
+  <!-- Modal Preview Project -->
+  <div class="preview-modal-overlay" id="previewOverlay">
+    <div class="preview-modal-box">
+      <div class="preview-modal-header">
+        <h2>Project Preview: <span id="previewTitle"></span></h2>
+        <div class="preview-header-actions">
+          <a id="previewOpenNewTab" href="#" target="_blank" rel="noopener">Open in new tab &#8599;</a>
+          <button type="button" id="previewCloseBtn" aria-label="Tutup">&times;</button>
+        </div>
+      </div>
+
+      <div class="preview-modal-body">
+        <div class="preview-thumb">
+          <img id="previewImage" src="" alt="">
+          <span class="thumb-placeholder" id="previewPlaceholder">&#9670;</span>
+        </div>
+
+        <div class="preview-details">
+          <h4>Project Details</h4>
+          <div class="preview-tech-badges" id="previewTechBadges"></div>
+
+          <h4>Description</h4>
+          <p id="previewDescription"></p>
+        </div>
+      </div>
+
+      <div class="preview-modal-footer">
+        <a id="previewFullSiteBtn" href="#" target="_blank" rel="noopener" class="btn-preview-primary">View Full Site</a>
+        <button type="button" id="previewCloseBtn2" class="btn-preview-secondary">Close Preview</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/projects-preview.js"></script>
+
+</body>
+</html>
