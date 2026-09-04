@@ -31,81 +31,198 @@
 
     <div class="settings-layout">
 
-      <form action="/admin/settings" method="POST" class="settings-form" id="settingsForm" novalidate>
+      <form action="/admin/settings" method="POST" class="settings-form" id="settingsForm" novalidate enctype="multipart/form-data">
 
-        <section class="settings-card">
-          <div class="settings-card-head">
-            <h2>Identitas situs</h2>
-            <p>Judul dan tagline yang tampil di tab browser dan header.</p>
-          </div>
+        <div class="settings-tabs" role="tablist">
+          <button type="button" class="settings-tab is-active" data-tab="profile" role="tab">Profile</button>
+          <button type="button" class="settings-tab" data-tab="social" role="tab">Social Media</button>
+          <button type="button" class="settings-tab" data-tab="appearance" role="tab">Appearance</button>
+          <button type="button" class="settings-tab" data-tab="password" role="tab">Password</button>
+          <button type="button" class="settings-tab" data-tab="general" role="tab">General</button>
+        </div>
 
-          <div class="form-group">
-            <label for="siteTitle">Judul situs</label>
-            <input type="text" id="siteTitle" name="siteTitle" maxlength="60"
-              value="<%= val(s.siteTitle) %>" placeholder="Nama situs kamu" data-preview="title">
-          </div>
-
-          <div class="form-group">
-            <label for="tagline">Tagline</label>
-            <input type="text" id="tagline" name="tagline" maxlength="100"
-              value="<%= val(s.tagline) %>" placeholder="Satu kalimat singkat tentang kamu" data-preview="tagline" data-counter="taglineCounter">
-            <span class="char-counter" id="taglineCounter">0/100</span>
-          </div>
-        </section>
-
-        <section class="settings-card">
-          <div class="settings-card-head">
-            <h2>Kontak &amp; sosial</h2>
-            <p>Ditampilkan sebagai tautan cepat di footer portfolio.</p>
-          </div>
-
-          <div class="form-group">
-            <label for="contactEmail">Email kontak</label>
-            <div class="input-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 6.5 12 13l9-6.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="3" y="5" width="18" height="14" rx="2"/></svg>
-              <input type="email" id="contactEmail" name="contactEmail"
-                value="<%= val(s.contactEmail) %>" placeholder="kamu@contoh.com" data-preview="email">
+        <!-- ============ PROFILE ============ -->
+        <div class="settings-panel is-active" data-panel="profile">
+          <section class="settings-card">
+            <div class="settings-card-head">
+              <h2>Profil</h2>
+              <p>Nama, foto, bio, email, dan informasi diri kamu.</p>
             </div>
-          </div>
 
-          <div class="form-row">
             <div class="form-group">
-              <label for="github">GitHub</label>
+              <label for="fullName">Nama lengkap</label>
+              <input type="text" id="fullName" name="fullName" maxlength="80"
+                value="<%= val(s.fullName) %>" placeholder="Nama kamu" data-preview="fullName">
+            </div>
+
+            <div class="form-group">
+              <label for="photoUrl">URL foto profil</label>
+              <input type="url" id="photoUrl" name="photoUrl"
+                value="<%= val(s.photoUrl) %>" placeholder="https://.../foto.jpg" data-preview="photo">
+            </div>
+
+            <div class="form-group">
+              <label for="bio">Bio singkat</label>
+              <textarea id="bio" name="bio" maxlength="240" rows="4"
+                placeholder="Ceritakan sedikit tentang kamu" data-preview="bio"><%= val(s.bio) %></textarea>
+              <span class="char-counter" id="bioCounter">0/240</span>
+            </div>
+
+            <div class="form-group">
+              <label for="contactEmail">Email kontak</label>
               <div class="input-icon">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.2c0 4.5 2.87 8.32 6.84 9.67.5.1.68-.22.68-.5 0-.24-.01-1.04-.01-1.9-2.78.62-3.37-1.22-3.37-1.22-.46-1.2-1.11-1.52-1.11-1.52-.9-.63.07-.62.07-.62 1 .07 1.53 1.05 1.53 1.05.9 1.56 2.36 1.11 2.94.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.32.1-2.75 0 0 .84-.28 2.75 1.05a9.3 9.3 0 0 1 5 0c1.9-1.33 2.74-1.05 2.74-1.05.56 1.43.21 2.49.1 2.75.65.72 1.03 1.63 1.03 2.75 0 3.94-2.35 4.8-4.58 5.06.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .28.18.6.69.5A10.02 10.02 0 0 0 22 12.2C22 6.58 17.52 2 12 2Z"/></svg>
-                <input type="url" id="github" name="github"
-                  value="<%= val(s.github) %>" placeholder="https://github.com/username" data-preview="github">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 6.5 12 13l9-6.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="3" y="5" width="18" height="14" rx="2"/></svg>
+                <input type="email" id="contactEmail" name="contactEmail"
+                  value="<%= val(s.contactEmail) %>" placeholder="kamu@contoh.com" data-preview="email">
               </div>
             </div>
-            <div class="form-group">
-              <label for="linkedin">LinkedIn</label>
-              <div class="input-icon">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.94 6.5a1.94 1.94 0 1 1 0-3.88 1.94 1.94 0 0 1 0 3.88ZM5.06 8.75h3.75V21H5.06V8.75ZM12.94 8.75h3.6v1.68h.05c.5-.9 1.73-1.85 3.56-1.85 3.8 0 4.5 2.36 4.5 5.44V21h-3.75v-6.1c0-1.46-.03-3.33-2.1-3.33-2.1 0-2.42 1.56-2.42 3.22V21h-3.44V8.75Z"/></svg>
-                <input type="url" id="linkedin" name="linkedin"
-                  value="<%= val(s.linkedin) %>" placeholder="https://linkedin.com/in/username" data-preview="linkedin">
+          </section>
+        </div>
+
+        <!-- ============ SOCIAL MEDIA ============ -->
+        <div class="settings-panel" data-panel="social">
+          <section class="settings-card">
+            <div class="settings-card-head">
+              <h2>Sosial media</h2>
+              <p>Ditampilkan sebagai tautan cepat di footer portfolio.</p>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="github">GitHub</label>
+                <div class="input-icon">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.2c0 4.5 2.87 8.32 6.84 9.67.5.1.68-.22.68-.5 0-.24-.01-1.04-.01-1.9-2.78.62-3.37-1.22-3.37-1.22-.46-1.2-1.11-1.52-1.11-1.52-.9-.63.07-.62.07-.62 1 .07 1.53 1.05 1.53 1.05.9 1.56 2.36 1.11 2.94.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.32.1-2.75 0 0 .84-.28 2.75 1.05a9.3 9.3 0 0 1 5 0c1.9-1.33 2.74-1.05 2.74-1.05.56 1.43.21 2.49.1 2.75.65.72 1.03 1.63 1.03 2.75 0 3.94-2.35 4.8-4.58 5.06.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .28.18.6.69.5A10.02 10.02 0 0 0 22 12.2C22 6.58 17.52 2 12 2Z"/></svg>
+                  <input type="url" id="github" name="github"
+                    value="<%= val(s.github) %>" placeholder="https://github.com/username" data-preview="github">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="linkedin">LinkedIn</label>
+                <div class="input-icon">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.94 6.5a1.94 1.94 0 1 1 0-3.88 1.94 1.94 0 0 1 0 3.88ZM5.06 8.75h3.75V21H5.06V8.75ZM12.94 8.75h3.6v1.68h.05c.5-.9 1.73-1.85 3.56-1.85 3.8 0 4.5 2.36 4.5 5.44V21h-3.75v-6.1c0-1.46-.03-3.33-2.1-3.33-2.1 0-2.42 1.56-2.42 3.22V21h-3.44V8.75Z"/></svg>
+                  <input type="url" id="linkedin" name="linkedin"
+                    value="<%= val(s.linkedin) %>" placeholder="https://linkedin.com/in/username" data-preview="linkedin">
+                </div>
               </div>
             </div>
-          </div>
-        </section>
 
-        <section class="settings-card settings-card--toggle" id="maintenanceCard">
-          <div class="settings-card-head">
-            <h2>Mode maintenance</h2>
-            <p>Saat aktif, pengunjung publik melihat halaman pemeliharaan, bukan portfolio.</p>
-          </div>
+            <div class="form-group">
+              <label for="instagram">Instagram</label>
+              <div class="input-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.2c2.9 0 3.3 0 4.4.06 1.1.05 1.9.24 2.6.5.7.28 1.3.65 1.9 1.25.6.6.97 1.2 1.25 1.9.26.7.45 1.5.5 2.6.06 1.1.06 1.5.06 4.4s0 3.3-.06 4.4c-.05 1.1-.24 1.9-.5 2.6-.28.7-.65 1.3-1.25 1.9-.6.6-1.2.97-1.9 1.25-.7.26-1.5.45-2.6.5-1.1.06-1.5.06-4.4.06s-3.3 0-4.4-.06c-1.1-.05-1.9-.24-2.6-.5-.7-.28-1.3-.65-1.9-1.25-.6-.6-.97-1.2-1.25-1.9-.26-.7-.45-1.5-.5-2.6C2.2 15.3 2.2 14.9 2.2 12s0-3.3.06-4.4c.05-1.1.24-1.9.5-2.6.28-.7.65-1.3 1.25-1.9.6-.6 1.2-.97 1.9-1.25.7-.26 1.5-.45 2.6-.5C8.7 2.2 9.1 2.2 12 2.2Zm0 1.8c-2.85 0-3.2 0-4.3.06-.9.04-1.4.2-1.7.33-.43.17-.74.37-1.06.7-.32.32-.52.63-.7 1.06-.13.3-.29.8-.33 1.7C3.85 8.8 3.85 9.15 3.85 12s0 3.2.06 4.3c.04.9.2 1.4.33 1.7.17.43.37.74.7 1.06.32.32.63.52 1.06.7.3.13.8.29 1.7.33 1.1.06 1.45.06 4.3.06s3.2 0 4.3-.06c.9-.04 1.4-.2 1.7-.33.43-.17.74-.37 1.06-.7.32-.32.52-.63.7-1.06.13-.3.29-.8.33-1.7.06-1.1.06-1.45.06-4.3s0-3.2-.06-4.3c-.04-.9-.2-1.4-.33-1.7a2.8 2.8 0 0 0-.7-1.06 2.8 2.8 0 0 0-1.06-.7c-.3-.13-.8-.29-1.7-.33-1.1-.06-1.45-.06-4.3-.06Zm0 3.5a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9Zm0 1.8a2.7 2.7 0 1 0 0 5.4 2.7 2.7 0 0 0 0-5.4Zm4.7-2a1.05 1.05 0 1 1 0 2.1 1.05 1.05 0 0 1 0-2.1Z"/></svg>
+                <input type="url" id="instagram" name="instagram"
+                  value="<%= val(s.instagram) %>" placeholder="https://instagram.com/username" data-preview="instagram">
+              </div>
+            </div>
+          </section>
+        </div>
 
-          <label class="switch-row" for="maintenanceMode">
-            <span class="switch-row-text">
-              <span class="switch-row-label">Situs dalam mode maintenance</span>
-              <span class="switch-row-status" id="maintenanceStatus">Nonaktif — situs tampil normal</span>
-            </span>
-            <span class="switch">
-              <input type="checkbox" id="maintenanceMode" name="maintenanceMode" data-preview="maintenance"
-                <%= s.maintenanceMode ? 'checked' : '' %>>
-              <span class="switch-track"><span class="switch-thumb"></span></span>
-            </span>
-          </label>
-        </section>
+        <!-- ============ APPEARANCE ============ -->
+        <div class="settings-panel" data-panel="appearance">
+          <section class="settings-card">
+            <div class="settings-card-head">
+              <h2>Tampilan</h2>
+              <p>Mode warna dan warna aksen tema portfolio kamu.</p>
+            </div>
+
+            <div class="form-group">
+              <label>Mode tema</label>
+              <div class="theme-toggle" role="radiogroup" aria-label="Mode tema">
+                <label class="theme-option">
+                  <input type="radio" name="themeMode" value="light" <%= (s.themeMode || 'light') === 'light' ? 'checked' : '' %>>
+                  <span>Light</span>
+                </label>
+                <label class="theme-option">
+                  <input type="radio" name="themeMode" value="dark" <%= s.themeMode === 'dark' ? 'checked' : '' %>>
+                  <span>Dark</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="accentColor">Warna tema</label>
+              <div class="color-picker-row">
+                <input type="color" id="accentColor" name="accentColor" value="<%= s.accentColor || '#c9793c' %>">
+                <span class="color-picker-value" id="accentColorValue"><%= s.accentColor || '#c9793c' %></span>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- ============ PASSWORD ============ -->
+        <div class="settings-panel" data-panel="password">
+          <section class="settings-card">
+            <div class="settings-card-head">
+              <h2>Ganti password</h2>
+              <p>Kosongkan semua kolom di bawah jika kamu tidak ingin mengganti password.</p>
+            </div>
+
+            <div class="form-group">
+              <label for="currentPassword">Password saat ini</label>
+              <input type="password" id="currentPassword" name="currentPassword" autocomplete="current-password" placeholder="••••••••">
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="newPassword">Password baru</label>
+                <input type="password" id="newPassword" name="newPassword" autocomplete="new-password" minlength="8" placeholder="Minimal 8 karakter">
+              </div>
+              <div class="form-group">
+                <label for="confirmPassword">Konfirmasi password baru</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" autocomplete="new-password" placeholder="Ulangi password baru">
+              </div>
+            </div>
+            <span class="field-hint" id="passwordHint"></span>
+          </section>
+        </div>
+
+        <!-- ============ GENERAL ============ -->
+        <div class="settings-panel" data-panel="general">
+          <section class="settings-card">
+            <div class="settings-card-head">
+              <h2>Identitas situs</h2>
+              <p>Judul, tagline, dan logo yang tampil di tab browser dan header.</p>
+            </div>
+
+            <div class="form-group">
+              <label for="siteTitle">Judul situs</label>
+              <input type="text" id="siteTitle" name="siteTitle" maxlength="60"
+                value="<%= val(s.siteTitle) %>" placeholder="Nama situs kamu" data-preview="title">
+            </div>
+
+            <div class="form-group">
+              <label for="tagline">Tagline</label>
+              <input type="text" id="tagline" name="tagline" maxlength="100"
+                value="<%= val(s.tagline) %>" placeholder="Satu kalimat singkat tentang kamu" data-preview="tagline" data-counter="taglineCounter">
+              <span class="char-counter" id="taglineCounter">0/100</span>
+            </div>
+
+            <div class="form-group">
+              <label for="logoUrl">URL logo</label>
+              <input type="url" id="logoUrl" name="logoUrl"
+                value="<%= val(s.logoUrl) %>" placeholder="https://.../logo.png" data-preview="logo">
+            </div>
+          </section>
+
+          <section class="settings-card settings-card--toggle" id="maintenanceCard">
+            <div class="settings-card-head">
+              <h2>Mode maintenance</h2>
+              <p>Saat aktif, pengunjung publik melihat halaman pemeliharaan, bukan portfolio.</p>
+            </div>
+
+            <label class="switch-row" for="maintenanceMode">
+              <span class="switch-row-text">
+                <span class="switch-row-label">Situs dalam mode maintenance</span>
+                <span class="switch-row-status" id="maintenanceStatus">Nonaktif — situs tampil normal</span>
+              </span>
+              <span class="switch">
+                <input type="checkbox" id="maintenanceMode" name="maintenanceMode" data-preview="maintenance"
+                  <%= s.maintenanceMode ? 'checked' : '' %>>
+                <span class="switch-track"><span class="switch-thumb"></span></span>
+              </span>
+            </label>
+          </section>
+        </div>
 
         <div class="settings-actionbar" id="actionBar">
           <span class="settings-actionbar-status" id="dirtyStatus">Semua perubahan tersimpan</span>
@@ -147,6 +264,7 @@
               <span class="preview-chip" id="previewEmail" data-empty="true">Email belum diisi</span>
               <span class="preview-chip" id="previewGithub" data-empty="true">GitHub belum diisi</span>
               <span class="preview-chip" id="previewLinkedin" data-empty="true">LinkedIn belum diisi</span>
+              <span class="preview-chip" id="previewInstagram" data-empty="true">Instagram belum diisi</span>
             </div>
           </div>
         </div>
@@ -166,9 +284,26 @@
   const dirtyStatus = document.getElementById('dirtyStatus');
   const resetBtn = document.getElementById('resetBtn');
 
+  // --- Tab switching ---
+  const tabs = document.querySelectorAll('.settings-tab');
+  const panels = document.querySelectorAll('.settings-panel');
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      tabs.forEach(function (t) { t.classList.remove('is-active'); });
+      panels.forEach(function (p) { p.classList.remove('is-active'); });
+      tab.classList.add('is-active');
+      const target = document.querySelector('.settings-panel[data-panel="' + tab.dataset.tab + '"]');
+      if (target) target.classList.add('is-active');
+    });
+  });
+
   const maintenanceInput = document.getElementById('maintenanceMode');
   const maintenanceCard = document.getElementById('maintenanceCard');
   const maintenanceStatus = document.getElementById('maintenanceStatus');
+
+  const fullNameInput = document.getElementById('fullName');
+  const bioInput = document.getElementById('bio');
+  const bioCounter = document.getElementById('bioCounter');
 
   const titleInput = document.getElementById('siteTitle');
   const taglineInput = document.getElementById('tagline');
@@ -176,6 +311,14 @@
   const emailInput = document.getElementById('contactEmail');
   const githubInput = document.getElementById('github');
   const linkedinInput = document.getElementById('linkedin');
+  const instagramInput = document.getElementById('instagram');
+
+  const accentColorInput = document.getElementById('accentColor');
+  const accentColorValue = document.getElementById('accentColorValue');
+
+  const newPasswordInput = document.getElementById('newPassword');
+  const confirmPasswordInput = document.getElementById('confirmPassword');
+  const passwordHint = document.getElementById('passwordHint');
 
   const previewTabTitle = document.getElementById('previewTabTitle');
   const previewFavicon = document.getElementById('previewFavicon');
@@ -185,6 +328,7 @@
   const previewEmail = document.getElementById('previewEmail');
   const previewGithub = document.getElementById('previewGithub');
   const previewLinkedin = document.getElementById('previewLinkedin');
+  const previewInstagram = document.getElementById('previewInstagram');
   const previewBanner = document.getElementById('previewMaintenanceBanner');
 
   let initialState = new FormData(form);
@@ -209,12 +353,32 @@
     }
   }
 
+  function checkPasswordMatch() {
+    if (!newPasswordInput || !confirmPasswordInput || !passwordHint) return;
+    if (!newPasswordInput.value && !confirmPasswordInput.value) {
+      passwordHint.textContent = '';
+      passwordHint.classList.remove('is-error');
+      return;
+    }
+    if (newPasswordInput.value.length > 0 && newPasswordInput.value.length < 8) {
+      passwordHint.textContent = 'Password baru minimal 8 karakter';
+      passwordHint.classList.add('is-error');
+    } else if (confirmPasswordInput.value !== newPasswordInput.value) {
+      passwordHint.textContent = 'Konfirmasi password tidak cocok';
+      passwordHint.classList.add('is-error');
+    } else {
+      passwordHint.textContent = 'Password cocok';
+      passwordHint.classList.remove('is-error');
+    }
+  }
+
   function updatePreview() {
     const title = titleInput.value.trim() || 'Judul situs';
     const tagline = taglineInput.value.trim() || 'Tagline akan muncul di sini';
     const email = emailInput.value.trim();
     const github = githubInput.value.trim();
     const linkedin = linkedinInput.value.trim();
+    const instagram = instagramInput.value.trim();
 
     previewTabTitle.textContent = title;
     previewTitle.textContent = title;
@@ -223,6 +387,9 @@
     previewFavicon.style.background = title ? 'var(--accent)' : 'var(--line)';
 
     taglineCounter.textContent = taglineInput.value.length + '/100';
+    if (bioInput && bioCounter) {
+      bioCounter.textContent = bioInput.value.length + '/240';
+    }
 
     if (email) {
       previewEmail.textContent = email;
@@ -247,6 +414,20 @@
       previewLinkedin.textContent = 'LinkedIn belum diisi';
       previewLinkedin.dataset.empty = 'true';
     }
+
+    if (instagram) {
+      previewInstagram.textContent = updateHost(instagram) || 'Instagram';
+      previewInstagram.dataset.empty = 'false';
+    } else {
+      previewInstagram.textContent = 'Instagram belum diisi';
+      previewInstagram.dataset.empty = 'true';
+    }
+
+    if (accentColorValue && accentColorInput) {
+      accentColorValue.textContent = accentColorInput.value;
+    }
+
+    checkPasswordMatch();
 
     const isMaintenance = maintenanceInput.checked;
     previewBanner.classList.toggle('is-visible', isMaintenance);

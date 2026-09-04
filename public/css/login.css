@@ -12,6 +12,8 @@
   --accent-navy: #16234A;
   --accent-blue: #2563EB;
   --accent-hover: #1D4ED8;
+  --gold-bright: #F0D5AC;
+  --gold-dim: #C89968;
   --focus-border: #3B82F6;
   --border-color: #1C2333;
   --input-bg: #10141F;
@@ -26,12 +28,39 @@
   margin: 0;
   min-height: 100vh;
   font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  background-color: var(--bg-main);
+  background-color: #020306;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-body::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 12% 20%, rgba(217,179,130,0.10), transparent 45%),
+    radial-gradient(circle at 88% 80%, rgba(37,99,235,0.14), transparent 45%);
+  pointer-events: none;
 }
 
 .login-page {
+  position: relative;
+  z-index: 1;
   display: flex;
-  min-height: 100vh;
+  width: 100%;
+  max-width: 1080px;
+  min-height: 620px;
+  border-radius: 28px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(217, 179, 130, 0.05);
+  background-color: var(--bg-main);
 }
 
 /* pattern grid diamond — halus, nyambung di dua sisi */
@@ -43,80 +72,103 @@
     repeating-linear-gradient(-45deg, rgba(217,179,130,0.03) 0, rgba(217,179,130,0.03) 1px, transparent 1px, transparent 46px);
 }
 
-/* ===== KOLOM KIRI ===== */
+/* ===== KOLOM KIRI — foto + quote card ===== */
 .login-left {
+  position: relative;
   flex: 1;
-  background-color: var(--bg-left);
-  padding: 48px 64px;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  border-right: 1px solid var(--border-color);
 }
 
-.login-left::after {
+.login-left::before {
   content: '';
   position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 20% 80%, rgba(217,179,130,0.07), transparent 55%);
-  pointer-events: none;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, rgba(217,179,130,0.25) 50%, transparent);
+  z-index: 2;
 }
 
-.breadcrumb {
+.login-hero-img {
   position: absolute;
-  top: 40px;
-  left: 64px;
-  z-index: 1;
+  inset: 0;
+  width: 60%;
+  height: 60%;
+  object-fit: cover;
+  filter: saturate(0.9) contrast(1.05);
+}
+
+.login-left-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(5,7,16,0.15) 0%, rgba(5,7,16,0.35) 55%, rgba(5,7,16,0.92) 100%),
+    radial-gradient(circle at 15% 15%, rgba(217,179,130,0.18), transparent 50%);
+}
+
+.quote-icon {
+  position: absolute;
+  top: 32px;
+  left: 32px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text-primary);
-}
-
-.breadcrumb .dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background-color: #22c55e;
-  box-shadow: 0 0 8px rgba(34, 197, 94, 0.6);
-}
-
-.left-content {
-  position: relative;
-  z-index: 1;
-  max-width: 420px;
-}
-
-.left-content .eyebrow {
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--accent-gold);
-  margin: 0 0 14px 0;
-}
-
-.left-content h1 {
-  font-size: 40px;
+  justify-content: center;
+  border-radius: 10px;
+  background: rgba(245, 241, 232, 0.92);
+  color: var(--accent-navy);
+  font-size: 22px;
   font-weight: 800;
-  color: var(--text-primary);
-  margin: 0 0 16px 0;
-  letter-spacing: -0.5px;
-  line-height: 1.15;
+  line-height: 1;
 }
 
-.left-subtitle {
-  font-size: 15px;
-  color: var(--text-muted);
-  line-height: 1.6;
+.login-left-bottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 32px 40px 36px;
+  z-index: 1;
+}
+
+.site-tag {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(16, 20, 31, 0.65);
+  border: 1px solid rgba(245, 241, 232, 0.15);
+  color: var(--text-primary);
+  font-size: 11px;
+  font-weight: 600;
+  margin-bottom: 18px;
+}
+
+.hero-quote {
+  color: var(--text-primary);
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.45;
+  margin: 0 0 14px 0;
+  max-width: 380px;
+}
+
+.hero-author {
+  color: var(--accent-gold);
+  font-size: 13px;
+  font-weight: 700;
   margin: 0;
+}
+
+.hero-author span {
+  color: var(--text-muted);
+  font-weight: 500;
 }
 
 /* ===== KOLOM KANAN ===== */
 .login-right {
+  position: relative;
   flex: 1;
   background-color: var(--bg-main);
   display: flex;
@@ -125,11 +177,21 @@
   padding: 48px 64px;
 }
 
+.login-right::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(217,179,130,0.05) 0%, transparent 12%);
+  pointer-events: none;
+}
+
 .login-right::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 80% 30%, rgba(37,99,235,0.10), transparent 55%);
+  background:
+    radial-gradient(circle at 85% 10%, rgba(217,179,130,0.08), transparent 50%),
+    radial-gradient(circle at 20% 90%, rgba(37,99,235,0.08), transparent 55%);
   pointer-events: none;
 }
 
@@ -138,6 +200,30 @@
   z-index: 1;
   width: 100%;
   max-width: 380px;
+}
+
+.login-form-wrap .eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--accent-gold);
+  margin: 0 0 10px 0;
+}
+
+.login-title {
+  font-size: 30px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0 0 8px 0;
+  letter-spacing: -0.5px;
+}
+
+.login-subtitle {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin: 0 0 28px 0;
+  line-height: 1.5;
 }
 
 .login-form {
@@ -174,9 +260,17 @@
 
 .input-group input:focus {
   outline: none;
-  background-color: #161d2c;
+  background-color: #14181f;
   border-color: var(--accent-gold);
   box-shadow: 0 0 0 3px var(--accent-gold-soft);
+}
+
+.input-group input {
+  transition: all 0.2s ease, border-color 0.2s ease;
+}
+
+.input-group input:hover:not(:focus) {
+  border-color: rgba(217, 179, 130, 0.25);
 }
 
 .password-wrap {
@@ -203,23 +297,23 @@
 .login-btn {
   margin-top: 10px;
   padding: 14px 16px;
-  background-color: var(--accent-blue);
-  color: #FFFFFF;
+  background: linear-gradient(135deg, var(--gold-bright), var(--accent-gold) 60%, var(--gold-dim));
+  color: #1A140C;
   border: none;
   border-radius: 999px;
   font-family: inherit;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 0.8px;
   text-transform: uppercase;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
+  box-shadow: 0 8px 24px rgba(217, 179, 130, 0.25);
 }
 
 .login-btn:hover {
-  background-color: var(--accent-hover);
-  box-shadow: 0 8px 22px rgba(37, 99, 235, 0.45);
+  filter: brightness(1.06);
+  box-shadow: 0 10px 28px rgba(217, 179, 130, 0.35);
   transform: translateY(-1px);
 }
 
@@ -250,14 +344,23 @@
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 900px) {
-  .login-page { flex-direction: column; }
+  .login-body { padding: 0; }
+  .login-page {
+    flex-direction: column;
+    max-width: 100%;
+    min-height: 100vh;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+  }
   .login-left {
-    min-height: 220px;
-    padding: 28px 32px;
+    min-height: 260px;
     border-right: none;
     border-bottom: 1px solid var(--border-color);
   }
-  .breadcrumb { position: static; margin-bottom: 24px; }
-  .left-content h1 { font-size: 28px; }
+  .login-left-bottom { padding: 24px 24px 28px; }
+  .hero-quote { font-size: 16px; max-width: 100%; }
+  .quote-icon { top: 20px; left: 20px; }
+  .login-title { font-size: 26px; }
   .login-right { padding: 32px 24px; }
 }

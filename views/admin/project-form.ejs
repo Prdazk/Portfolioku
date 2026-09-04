@@ -10,18 +10,15 @@
 </head>
 <body>
 
-<div class="shell">
+<div class="form-modal-overlay">
+  <div class="form-modal-card">
 
-  <%- include('../partials/admin-sidebar', { active: 'projects' }) %>
-
-  <main class="main">
-    <div class="topbar">
+    <div class="form-modal-header">
       <div>
         <p class="eyebrow">Projects</p>
         <h1><%= project ? 'Edit Project' : 'Tambah Project' %></h1>
-        <p class="topbar-sub">Isi detail project di bawah ini.</p>
       </div>
-      <a href="/admin/projects" class="btn">&larr; Kembali</a>
+      <a href="/admin/projects" class="form-modal-close" aria-label="Tutup">&times;</a>
     </div>
 
     <% if (error) { %>
@@ -40,9 +37,19 @@
         <!-- ================= KOLOM UTAMA ================= -->
         <div class="form-main">
 
-          <div class="input-group">
+                    <div class="input-group">
             <label for="title">Judul Project</label>
             <input type="text" id="title" name="title" value="<%= project ? project.title : '' %>" required>
+          </div>
+
+          <div class="input-group">
+            <label for="type">Tipe Project</label>
+            <select id="type" name="type" onchange="toggleTypeFields()" required>
+              <option value="">— Pilih tipe —</option>
+              <option value="web" <%= (project && project.type === 'web') ? 'selected' : '' %>>Web</option>
+              <option value="iot" <%= (project && project.type === 'iot') ? 'selected' : '' %>>IoT</option>
+              <option value="ai" <%= (project && project.type === 'ai') ? 'selected' : '' %>>AI</option>
+            </select>
           </div>
 
           <div class="input-group">
@@ -61,7 +68,7 @@
 
           <div class="input-group">
             <label for="description">Deskripsi Lengkap</label>
-            <textarea id="description" name="description" rows="6"><%= project ? (project.description || '') : '' %></textarea>
+            <textarea id="description" name="description" rows="3"><%= project ? (project.description || '') : '' %></textarea>
           </div>
 
           <div class="input-group-row">
@@ -75,115 +82,34 @@
             </div>
           </div>
 
-          <div class="input-group">
-            <label for="video_url">Link Video Demo</label>
-            <input type="url" id="video_url" name="video_url" placeholder="https://youtube.com/..." value="<%= project ? (project.video_url || '') : '' %>">
-          </div>
-
-          <div class="input-group">
-            <label>Teknologi</label>
-            <div class="checkbox-grid">
-              <% technologies.forEach(function(tech) { %>
-                <label class="checkbox-item">
-                  <input type="checkbox" name="technologies" value="<%= tech.id %>"
-                    <%= selectedTechIds.includes(tech.id) ? 'checked' : '' %>>
-                  <%= tech.name %>
-                </label>
-              <% }); %>
-            </div>
-            <p class="field-hint">Belum ada teknologi yang cocok? Tambahkan dulu di menu Technologies.</p>
+            <div class="input-group">
+            <label for="technologies">Teknologi</label>
+            <input type="text" id="technologies" name="technologies"
+              placeholder="cth: React, Node.js, MongoDB"
+              value="<%= project && project.technologies_text ? project.technologies_text : (technologies || []).filter(t => selectedTechIds.includes(t.id)).map(t => t.name).join(', ') %>">
+            <p class="field-hint">Tulis bebas, pisahkan dengan koma. Tidak dibatasi daftar tetap.</p>
           </div>
 
           <!-- ============ TEMPLATE FIELD: WEB ============ -->
           <div class="type-fields" data-type="web">
-            <div class="section-divider">
-              <span>&#127760;</span> Detail Project Web
-            </div>
-
-            <div class="input-group-row">
-              <div class="input-group">
-                <label for="web_frontend">Frontend Stack</label>
-                <input type="text" id="web_frontend" name="web_frontend" placeholder="React, Vue, Tailwind..."
-                  value="<%= project ? (project.web_frontend || '') : '' %>">
-              </div>
-              <div class="input-group">
-                <label for="web_backend">Backend Stack</label>
-                <input type="text" id="web_backend" name="web_backend" placeholder="Node.js, Laravel..."
-                  value="<%= project ? (project.web_backend || '') : '' %>">
-              </div>
-            </div>
-
-            <div class="input-group-row">
-              <div class="input-group">
-                <label for="web_database">Database</label>
-                <input type="text" id="web_database" name="web_database" placeholder="MySQL, MongoDB..."
-                  value="<%= project ? (project.web_database || '') : '' %>">
-              </div>
-              <div class="input-group">
-                <label for="web_hosting">Hosting / Deployment</label>
-                <input type="text" id="web_hosting" name="web_hosting" placeholder="Vercel, VPS, Netlify..."
-                  value="<%= project ? (project.web_hosting || '') : '' %>">
-              </div>
-            </div>
+          <div class="section-divider">Detail Project Web</div>
 
             <div class="input-group">
-              <label for="web_type">Tipe Project</label>
-              <select id="web_type" name="web_type">
-                <option value="">— Pilih tipe —</option>
-                <option value="landing" <%= (project && project.web_type === 'landing') ? 'selected' : '' %>>Landing Page</option>
-                <option value="webapp" <%= (project && project.web_type === 'webapp') ? 'selected' : '' %>>Web App</option>
-                <option value="ecommerce" <%= (project && project.web_type === 'ecommerce') ? 'selected' : '' %>>E-commerce</option>
-                <option value="dashboard" <%= (project && project.web_type === 'dashboard') ? 'selected' : '' %>>Dashboard/Admin Panel</option>
-              </select>
+              <label for="web_details">Detail Teknis</label>
+              <textarea id="web_details" name="web_details" rows="2"
+                placeholder="cth: Frontend React + Tailwind, backend Node.js, database MongoDB, deploy di Vercel"
+              ><%= project ? (project.web_details || '') : '' %></textarea>
             </div>
           </div>
 
-          <!-- ============ TEMPLATE FIELD: IOT ============ -->
+                   <!-- ============ TEMPLATE FIELD: IOT ============ -->
           <div class="type-fields" data-type="iot">
-            <div class="section-divider">
-              <span>&#128268;</span> Detail Project IoT
-            </div>
-
+           <div class="section-divider">Detail Project IoT</div>
             <div class="input-group">
-              <label for="iot_components">Komponen Hardware</label>
-              <input type="text" id="iot_components" name="iot_components" placeholder="ESP32, sensor DHT11, relay..."
-                value="<%= project ? (project.iot_components || '') : '' %>">
-            </div>
-
-            <div class="input-group-row">
-              <div class="input-group">
-                <label for="iot_microcontroller">Mikrokontroler</label>
-                <input type="text" id="iot_microcontroller" name="iot_microcontroller" placeholder="Arduino Uno, ESP32..."
-                  value="<%= project ? (project.iot_microcontroller || '') : '' %>">
-              </div>
-              <div class="input-group">
-                <label for="iot_protocol">Protokol Komunikasi</label>
-                <input type="text" id="iot_protocol" name="iot_protocol" placeholder="MQTT, HTTP, Bluetooth, LoRa..."
-                  value="<%= project ? (project.iot_protocol || '') : '' %>">
-              </div>
-            </div>
-
-            <div class="input-group-row">
-              <div class="input-group">
-                <label for="iot_platform">Platform IoT/Cloud</label>
-                <input type="text" id="iot_platform" name="iot_platform" placeholder="Blynk, Firebase, ThingSpeak..."
-                  value="<%= project ? (project.iot_platform || '') : '' %>">
-              </div>
-              <div class="input-group">
-                <label for="iot_firmware">Firmware / Bahasa</label>
-                <input type="text" id="iot_firmware" name="iot_firmware" placeholder="C++, MicroPython, Arduino IDE..."
-                  value="<%= project ? (project.iot_firmware || '') : '' %>">
-              </div>
-            </div>
-
-            <div class="input-group">
-              <label for="iot_power">Sumber Daya</label>
-              <select id="iot_power" name="iot_power">
-                <option value="">— Pilih sumber daya —</option>
-                <option value="battery" <%= (project && project.iot_power === 'battery') ? 'selected' : '' %>>Baterai</option>
-                <option value="adapter" <%= (project && project.iot_power === 'adapter') ? 'selected' : '' %>>Adaptor</option>
-                <option value="solar" <%= (project && project.iot_power === 'solar') ? 'selected' : '' %>>Solar Panel</option>
-              </select>
+              <label for="iot_details">Detail Teknis</label>
+              <textarea id="iot_details" name="iot_details" rows="2"
+                placeholder="cth: ESP32 + sensor DHT11, protokol MQTT, platform Blynk, daya baterai"
+              ><%= project ? (project.iot_details || '') : '' %></textarea>
             </div>
 
             <div class="input-group">
@@ -195,72 +121,14 @@
             </div>
           </div>
 
-          <!-- ============ TEMPLATE FIELD: AI ============ -->
+                   <!-- ============ TEMPLATE FIELD: AI ============ -->
           <div class="type-fields" data-type="ai">
-            <div class="section-divider">
-              <span>&#129302;</span> Detail Project AI
-            </div>
-
-            <div class="input-group-row">
-              <div class="input-group">
-                <label for="ai_dataset">Dataset</label>
-                <input type="text" id="ai_dataset" name="ai_dataset" placeholder="Nama dataset + sumber"
-                  value="<%= project ? (project.ai_dataset || '') : '' %>">
-              </div>
-              <div class="input-group">
-                <label for="ai_dataset_size">Ukuran Dataset</label>
-                <input type="text" id="ai_dataset_size" name="ai_dataset_size" placeholder="cth: 10.000 gambar"
-                  value="<%= project ? (project.ai_dataset_size || '') : '' %>">
-              </div>
-            </div>
-
-            <div class="input-group-row">
-              <div class="input-group">
-                <label for="ai_model">Model / Algoritma</label>
-                <input type="text" id="ai_model" name="ai_model" placeholder="CNN, Random Forest, LLM fine-tune..."
-                  value="<%= project ? (project.ai_model || '') : '' %>">
-              </div>
-              <div class="input-group">
-                <label for="ai_framework">Framework</label>
-                <input type="text" id="ai_framework" name="ai_framework" placeholder="TensorFlow, PyTorch..."
-                  value="<%= project ? (project.ai_framework || '') : '' %>">
-              </div>
-            </div>
-
-            <div class="input-group-row">
-              <div class="input-group">
-                <label for="ai_task">Jenis Task</label>
-                <select id="ai_task" name="ai_task">
-                  <option value="">— Pilih jenis task —</option>
-                  <option value="classification" <%= (project && project.ai_task === 'classification') ? 'selected' : '' %>>Classification</option>
-                  <option value="regression" <%= (project && project.ai_task === 'regression') ? 'selected' : '' %>>Regression</option>
-                  <option value="nlp" <%= (project && project.ai_task === 'nlp') ? 'selected' : '' %>>NLP</option>
-                  <option value="cv" <%= (project && project.ai_task === 'cv') ? 'selected' : '' %>>Computer Vision</option>
-                </select>
-              </div>
-              <div class="input-group">
-                <label for="ai_metric">Akurasi / Metrik Hasil</label>
-                <input type="text" id="ai_metric" name="ai_metric" placeholder="cth: 94.2% accuracy"
-                  value="<%= project ? (project.ai_metric || '') : '' %>">
-              </div>
-            </div>
-
-            <div class="input-group-row">
-              <div class="input-group">
-                <label for="ai_notebook">Link Notebook</label>
-                <input type="url" id="ai_notebook" name="ai_notebook" placeholder="https://colab.research.google.com/..."
-                  value="<%= project ? (project.ai_notebook || '') : '' %>">
-              </div>
-              <div class="input-group">
-                <label for="ai_deployment">Deployment Model</label>
-                <select id="ai_deployment" name="ai_deployment">
-                  <option value="">— Pilih deployment —</option>
-                  <option value="api" <%= (project && project.ai_deployment === 'api') ? 'selected' : '' %>>API</option>
-                  <option value="webapp" <%= (project && project.ai_deployment === 'webapp') ? 'selected' : '' %>>Web App</option>
-                  <option value="mobile" <%= (project && project.ai_deployment === 'mobile') ? 'selected' : '' %>>Mobile</option>
-                  <option value="none" <%= (project && project.ai_deployment === 'none') ? 'selected' : '' %>>Tidak di-deploy</option>
-                </select>
-              </div>
+          <div class="section-divider">Detail Project AI</div>
+            <div class="input-group">
+              <label for="ai_details">Detail Teknis</label>
+              <textarea id="ai_details" name="ai_details" rows="2"
+                placeholder="cth: Dataset 10.000 gambar, model CNN dengan PyTorch, task classification, akurasi 94%, di-deploy sebagai API"
+              ><%= project ? (project.ai_details || '') : '' %></textarea>
             </div>
           </div>
 
@@ -268,16 +136,6 @@
 
         <!-- ================= KOLOM SAMPING ================= -->
         <div class="form-side">
-
-          <div class="input-group">
-            <label for="type">Tipe Project</label>
-            <select id="type" name="type" onchange="toggleTypeFields()" required>
-              <option value="">— Pilih tipe —</option>
-              <option value="web" <%= (project && project.type === 'web') ? 'selected' : '' %>>&#127760; Web</option>
-              <option value="iot" <%= (project && project.type === 'iot') ? 'selected' : '' %>>&#128268; IoT</option>
-              <option value="ai" <%= (project && project.type === 'ai') ? 'selected' : '' %>>&#129302; AI</option>
-            </select>
-          </div>
 
           <div class="input-group">
             <label for="category_id">Kategori</label>
@@ -308,36 +166,7 @@
             </label>
           </div>
 
-          <div class="input-group-row">
-            <div class="input-group">
-              <label for="start_date">Tanggal Mulai</label>
-              <input type="date" id="start_date" name="start_date"
-                value="<%= project && project.start_date ? project.start_date : '' %>">
-            </div>
-            <div class="input-group">
-              <label for="end_date">Tanggal Selesai</label>
-              <input type="date" id="end_date" name="end_date"
-                value="<%= project && project.end_date ? project.end_date : '' %>">
-            </div>
-          </div>
-
-          <div class="input-group">
-            <label for="role">Role / Kontribusi</label>
-            <input type="text" id="role" name="role" placeholder="cth: Fullstack Developer"
-              value="<%= project ? (project.role || '') : '' %>">
-          </div>
-
-          <div class="input-group">
-            <label for="client">Client / Organisasi</label>
-            <input type="text" id="client" name="client" placeholder="Opsional"
-              value="<%= project ? (project.client || '') : '' %>">
-          </div>
-
-          <div class="input-group">
-            <label for="sort_order">Urutan Tampil</label>
-            <input type="number" id="sort_order" name="sort_order" min="0"
-              value="<%= project && project.sort_order != null ? project.sort_order : 0 %>">
-          </div>
+         <input type="hidden" name="sort_order" value="<%= project && project.sort_order != null ? project.sort_order : 0 %>">
 
           <div class="input-group">
             <label>Gambar / Screenshot</label>
@@ -364,15 +193,18 @@
             <p class="field-hint">Bisa pilih beberapa file sekaligus (maks 10 gambar, masing-masing maks 5MB).</p>
           </div>
 
-          <button type="submit" class="btn btn-primary btn-block">
-            <%= project ? 'Simpan Perubahan' : 'Tambah Project' %>
-          </button>
+           <div class="form-modal-actions">
+            <a href="/admin/projects" class="btn btn-ghost">Batal</a>
+            <button type="submit" class="btn btn-primary">
+              <%= project ? 'Simpan Perubahan' : 'Tambah Project' %>
+            </button>
+          </div>
         </div>
 
       </div>
     </form>
-  </main>
 
+  </div>
 </div>
 
 <script>

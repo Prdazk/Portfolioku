@@ -11,13 +11,8 @@
 
     <!-- KIRI -->
     <div class="login-left">
-      <div class="breadcrumb"><span class="dot"></span>Portfolio / Admin</div>
-
-      <div class="left-content">
-        <p class="eyebrow">Admin Access</p>
-        <h1>Login ke Dashboard</h1>
-        <p class="left-subtitle">Kelola portfolio, project, dan tech stack kamu di sini.</p>
-      </div>
+      <img src="/css/images/Profil.png" alt="" class="login-hero-img">
+      <div class="login-left-overlay"></div>
     </div>
 
     <!-- KANAN -->
@@ -28,10 +23,14 @@
           <p class="error-msg"><%= error %></p>
         <% } %>
 
+        <p class="eyebrow">Admin Access</p>
+        <h1 class="login-title">Selamat datang kembali!</h1>
+        <p class="login-subtitle">Masuk untuk mengelola portfolio, project, dan tech stack kamu.</p>
+
         <form action="/admin/login" method="POST" class="login-form">
           <div class="input-group">
-            <label for="email">Email/Akun Pengguna</label>
-            <input type="text" id="email" name="email" placeholder="" required>
+            <label for="email">Email / Akun Pengguna</label>
+            <input type="text" id="email" name="email" placeholder="admin@domain.com" required>
           </div>
 
           <div class="input-group">
