@@ -26,6 +26,8 @@
 
     <form action="<%= skill ? '/admin/skills/' + skill.id + '/update' : '/admin/skills' %>" method="POST" class="settings-form">
 
+  <div class="skill-form-grid">
+    <div class="skill-form-col">
       <div class="form-group">
         <label for="name">Nama skill</label>
         <input type="text" id="name" name="name" placeholder="Contoh: React" value="<%= skill ? skill.name : '' %>" required>
@@ -33,16 +35,39 @@
 
       <div class="form-group">
         <label for="category">Kategori</label>
-        <input type="text" id="category" name="category" placeholder="Contoh: Frontend" value="<%= skill ? skill.category : '' %>" required>
+        <select id="category" name="category" required>
+          <option value="">-- Pilih Kategori --</option>
+          <option value="Frontend" <%= skill && skill.category === 'Frontend' ? 'selected' : '' %>>Frontend</option>
+          <option value="Backend" <%= skill && skill.category === 'Backend' ? 'selected' : '' %>>Backend</option>
+          <option value="Database" <%= skill && skill.category === 'Database' ? 'selected' : '' %>>Database</option>
+          <option value="Tools" <%= skill && skill.category === 'Tools' ? 'selected' : '' %>>Tools / DevOps</option>
+          <option value="Design" <%= skill && skill.category === 'Design' ? 'selected' : '' %>>Design</option>
+          <option value="Lainnya" <%= skill && skill.category === 'Lainnya' ? 'selected' : '' %>>Lainnya</option>
+        </select>
       </div>
 
+      <div class="form-group">
+        <label for="icon">Icon Class (opsional)</label>
+        <input type="text" id="icon" name="icon" placeholder="Contoh: devicon-react-original" value="<%= skill ? skill.icon : '' %>">
+        <small class="field-hint">Cari nama class di <a href="https://devicon.dev/" target="_blank">devicon.dev</a></small>
+      </div>
+    </div>
+
+    <div class="skill-form-col">
       <div class="form-group">
         <label for="level">Level (0–100)</label>
         <input type="number" id="level" name="level" min="0" max="100" value="<%= skill ? skill.level : '' %>" required>
       </div>
 
-      <button type="submit" class="btn-primary"><%= skill ? 'Simpan Perubahan' : 'Tambah Skill' %></button>
-    </form>
+      <div class="form-group">
+        <label for="sort_order">Urutan Tampil</label>
+        <input type="number" id="sort_order" name="sort_order" min="0" value="<%= skill ? skill.sort_order : 0 %>">
+      </div>
+    </div>
+  </div>
+
+  <button type="submit" class="btn-primary"><%= skill ? 'Simpan Perubahan' : 'Tambah Skill' %></button>
+</form>
   </main>
 
 </div>

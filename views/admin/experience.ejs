@@ -7,6 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/dashboard.css">
+<link rel="stylesheet" href="/css/skills.css">
+<link rel="stylesheet" href="/css/experience.css">
 </head>
 <body>
 
@@ -21,7 +23,7 @@
         <h1>Riwayat kerja & organisasi</h1>
         <p class="topbar-sub">Urutan otomatis berdasarkan tanggal mulai, yang terbaru di atas.</p>
       </div>
-      <a href="/admin/experience/new" class="btn-primary">+ Tambah Pengalaman</a>
+      <button type="button" class="btn-primary js-open-exp-modal" data-url="/admin/experience/new">+ Tambah Pengalaman</button>
     </div>
 
     <div class="timeline-list">
@@ -29,18 +31,28 @@
         <% experiences.forEach(function(exp) { %>
           <div class="timeline-card">
             <div class="timeline-period mono">
-              <%= exp.startDate %> — <%= exp.endDate ? exp.endDate : 'Sekarang' %>
+              <%= exp.startDate %> — <%= exp.isCurrent ? 'Sekarang' : (exp.endDate ? exp.endDate : '-') %>
             </div>
             <div class="timeline-body">
-              <h3><%= exp.role %></h3>
-              <p class="timeline-company"><%= exp.company %></p>
+              <div class="timeline-title-row">
+                <h3><%= exp.role %></h3>
+                <% if (exp.type) { %>
+                  <span class="tag"><%= exp.type %></span>
+                <% } %>
+              </div>
+              <p class="timeline-company">
+                <%= exp.company %><% if (exp.location) { %> · <%= exp.location %><% } %>
+              </p>
               <% if (exp.description) { %>
                 <p class="timeline-desc"><%= exp.description %></p>
               <% } %>
+              <% if (exp.techStack) { %>
+                <p class="timeline-tech mono"><%= exp.techStack %></p>
+              <% } %>
             </div>
             <div class="timeline-actions">
-              <a href="/admin/experience/<%= exp.id %>/edit" class="btn-ghost">Edit</a>
-              <form action="/admin/experience/<%= exp.id %>/delete" method="POST" class="inline-form" onsubmit="return confirm('Hapus riwayat ini?');">
+              <a href="/admin/experience/<%= exp.id %>/edit" class="btn-ghost js-open-exp-modal" data-url="/admin/experience/<%= exp.id %>/edit">Edit</a>
+              <form action="/admin/experience/<%= exp.id %>/delete" method="POST" class="inline-form delete-exp-form" data-exp-name="<%= exp.role %>">
                 <button type="submit" class="btn-ghost btn-danger">Hapus</button>
               </form>
             </div>
@@ -53,6 +65,109 @@
   </main>
 
 </div>
+
+
+<div class="modal-overlay" id="expModal">
+  <div class="modal-box">
+    <button type="button" class="modal-close" id="expModalClose">&times;</button>
+    <div class="modal-body" id="expModalBody">
+      <div class="modal-loading">Memuat form...</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const expModal = document.getElementById('expModal');
+const expModalBody = document.getElementById('expModalBody');
+const expModalClose = document.getElementById('expModalClose');
+
+function openExpModal(url) {
+  expModal.classList.add('is-open');
+  expModalBody.innerHTML = '<div class="modal-loading">Memuat form...</div>';
+
+  fetch(url)
+    .then(function (res) { return res.text(); })
+    .then(function (html) {
+      const parsed = new DOMParser().parseFromString(html, 'text/html');
+      const form = parsed.querySelector('.settings-form');
+      const title = parsed.querySelector('h1');
+      const eyebrow = parsed.querySelector('.eyebrow');
+
+      if (form) {
+        expModalBody.innerHTML = '';
+        if (eyebrow) {
+          const p = document.createElement('p');
+          p.className = 'modal-eyebrow';
+          p.textContent = eyebrow.textContent;
+          expModalBody.appendChild(p);
+        }
+        if (title) {
+          const h2 = document.createElement('h2');
+          h2.className = 'modal-title';
+          h2.textContent = title.textContent;
+          expModalBody.appendChild(h2);
+        }
+        expModalBody.appendChild(form);
+        initEndDateToggle();
+      } else {
+        expModalBody.innerHTML = '<div class="modal-loading">Gagal memuat form.</div>';
+      }
+    })
+    .catch(function () {
+      expModalBody.innerHTML = '<div class="modal-loading">Terjadi kesalahan saat memuat form.</div>';
+    });
+}
+
+function closeExpModal() {
+  expModal.classList.remove('is-open');
+}
+
+function initEndDateToggle() {
+  const checkbox = document.getElementById('is_current');
+  const endDateGroup = document.getElementById('endDateGroup');
+  if (!checkbox || !endDateGroup) return;
+
+  function syncEndDate() {
+    const endDateInput = document.getElementById('end_date');
+    if (checkbox.checked) {
+      endDateGroup.classList.add('is-disabled');
+      if (endDateInput) endDateInput.disabled = true;
+    } else {
+      endDateGroup.classList.remove('is-disabled');
+      if (endDateInput) endDateInput.disabled = false;
+    }
+  }
+
+  checkbox.addEventListener('change', syncEndDate);
+  syncEndDate();
+}
+
+document.querySelectorAll('.js-open-exp-modal').forEach(function (el) {
+  el.addEventListener('click', function (e) {
+    e.preventDefault();
+    openExpModal(el.dataset.url);
+  });
+});
+
+expModalClose.addEventListener('click', closeExpModal);
+
+expModal.addEventListener('click', function (e) {
+  if (e.target === expModal) closeExpModal();
+});
+
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape') closeExpModal();
+});
+
+document.querySelectorAll('.delete-exp-form').forEach(function (form) {
+  form.addEventListener('submit', function (e) {
+    const name = form.dataset.expName || 'pengalaman ini';
+    if (!confirm('Hapus riwayat "' + name + '"?')) {
+      e.preventDefault();
+    }
+  });
+});
+</script>
 
 </body>
 </html>

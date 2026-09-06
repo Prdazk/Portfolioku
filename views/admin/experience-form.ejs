@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title><%= experience ? 'Edit Experience' : 'Tambah Experience' %> — Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/dashboard.css">
+<link rel="stylesheet" href="/css/skills.css">
+<link rel="stylesheet" href="/css/experience.css">
+</head>
+<body>
+
+<div class="shell">
+
+  <%- include('../partials/admin-sidebar', { active: 'experience' }) %>
+
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <p class="eyebrow">Experience</p>
+        <h1><%= experience ? 'Edit Pengalaman' : 'Tambah Pengalaman Baru' %></h1>
+      </div>
+      <a href="/admin/experience" class="btn-ghost">Kembali</a>
+    </div>
+
+    <form action="<%= experience ? '/admin/experience/' + experience.id + '/update' : '/admin/experience' %>" method="POST" class="settings-form" enctype="multipart/form-data">
+
+      <div class="exp-form-grid">
+
+        <!-- ===== KOLOM KIRI ===== -->
+        <div class="exp-form-col">
+
+          <!-- 1. Posisi / Jabatan -->
+          <div class="form-group">
+            <label for="role">Posisi / Jabatan</label>
+            <input type="text" id="role" name="role" placeholder="Contoh: Frontend Developer" value="<%= experience ? experience.role : '' %>" required>
+          </div>
+
+          <!-- 2. Perusahaan / Tempat -->
+          <div class="form-group">
+            <label for="company">Perusahaan / Tempat</label>
+            <input type="text" id="company" name="company" placeholder="Contoh: PT Teknologi Nusantara" value="<%= experience ? experience.company : '' %>" required>
+          </div>
+
+          <!-- 3. Tipe Pekerjaan -->
+          <div class="form-group">
+            <label for="type">Tipe Pekerjaan</label>
+            <select id="type" name="type">
+              <option value="">-- Pilih Tipe --</option>
+              <option value="Full-time" <%= experience && experience.type === 'Full-time' ? 'selected' : '' %>>Full-time</option>
+              <option value="Part-time" <%= experience && experience.type === 'Part-time' ? 'selected' : '' %>>Part-time</option>
+              <option value="Freelance" <%= experience && experience.type === 'Freelance' ? 'selected' : '' %>>Freelance</option>
+              <option value="Internship" <%= experience && experience.type === 'Internship' ? 'selected' : '' %>>Internship / Magang</option>
+              <option value="Organisasi" <%= experience && experience.type === 'Organisasi' ? 'selected' : '' %>>Organisasi</option>
+            </select>
+          </div>
+
+          <!-- 4. Lokasi -->
+          <div class="form-group">
+            <label for="location">Lokasi</label>
+            <input type="text" id="location" name="location" placeholder="Contoh: Surabaya / Remote" value="<%= experience ? experience.location : '' %>">
+          </div>
+
+          <!-- 10. Logo Perusahaan -->
+          <div class="form-group">
+            <label for="logo">Logo Perusahaan (opsional)</label>
+            <input type="file" id="logo" name="logo" accept="image/*">
+            <% if (experience && experience.logoUrl) { %>
+              <img src="<%= experience.logoUrl %>" alt="Logo saat ini" class="current-thumb">
+            <% } %>
+            <small class="field-hint">Format PNG/JPG, maks 2MB.</small>
+          </div>
+
+        </div>
+
+        <!-- ===== KOLOM KANAN ===== -->
+        <div class="exp-form-col">
+
+          <!-- 5. Tanggal Mulai -->
+          <div class="form-group">
+            <label for="start_date">Tanggal Mulai</label>
+            <input type="month" id="start_date" name="start_date" value="<%= experience ? experience.startDateRaw : '' %>" required>
+          </div>
+
+          <!-- 7. Checkbox Masih Bekerja -->
+          <div class="form-group">
+            <label class="checkbox-item">
+              <input type="checkbox" id="is_current" name="is_current" value="1" <%= experience && experience.isCurrent ? 'checked' : '' %>>
+              Masih bekerja / aktif di sini
+            </label>
+          </div>
+
+          <!-- 6. Tanggal Selesai -->
+          <div class="form-group" id="endDateGroup">
+            <label for="end_date">Tanggal Selesai</label>
+            <input type="month" id="end_date" name="end_date" value="<%= experience ? experience.endDateRaw : '' %>">
+            <small class="field-hint">Kosongkan / nonaktif otomatis kalau masih aktif.</small>
+          </div>
+
+          <!-- 9. Teknologi yang Dipakai -->
+          <div class="form-group">
+            <label for="tech_stack">Teknologi yang Dipakai</label>
+            <input type="text" id="tech_stack" name="tech_stack" placeholder="cth: React, Node.js, PostgreSQL" value="<%= experience ? experience.techStack : '' %>">
+            <small class="field-hint">Tulis bebas, pisahkan dengan koma.</small>
+          </div>
+
+          <!-- 11. Urutan Tampil -->
+          <div class="form-group">
+            <label for="sort_order">Urutan Tampil</label>
+            <input type="number" id="sort_order" name="sort_order" min="0" value="<%= experience ? experience.sortOrder : 0 %>">
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- 8. Deskripsi (full width) -->
+      <div class="form-group exp-form-full">
+        <label for="description">Deskripsi</label>
+        <textarea id="description" name="description" placeholder="Poin-poin tanggung jawab atau pencapaian selama di posisi ini..."><%= experience ? experience.description : '' %></textarea>
+      </div>
+
+      <button type="submit" class="btn-primary"><%= experience ? 'Simpan Perubahan' : 'Tambah Pengalaman' %></button>
+    </form>
+  </main>
+
+</div>
+
+<script>
+  (function () {
+    const checkbox = document.getElementById('is_current');
+    const endDateInput = document.getElementById('end_date');
+    if (!checkbox || !endDateInput) return;
+
+    function sync() {
+      endDateInput.disabled = checkbox.checked;
+      if (checkbox.checked) endDateInput.value = '';
+    }
+
+    checkbox.addEventListener('change', sync);
+    sync();
+  })();
+</script>
+
+</body>
+</html>

@@ -4,8 +4,8 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: #c9793c;
-  color: #14140f;
+  background: var(--accent);
+  color: var(--ink);
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 600;
   font-size: 14px;
@@ -14,10 +14,10 @@
   border: none;
   text-decoration: none;
   cursor: pointer;
-  transition: background 0.15s ease, transform 0.08s ease;
+  transition: filter 0.15s ease, transform 0.08s ease;
 }
 
-.btn-primary:hover { background: #d68a4d; }
+.btn-primary:hover { filter: brightness(1.1); }
 .btn-primary:active { transform: scale(0.97); }
 
 .btn-ghost {
@@ -54,7 +54,13 @@
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 7px;
+  margin-bottom: 2px;
+}
+
+.field-hint {
+  margin-top: 2px;
+  display: block;
 }
 
 .form-group label {
@@ -63,21 +69,51 @@
 }
 
 .form-group input,
+.form-group select,
 .form-group textarea {
-  background: #17150f;
-  border: 1px solid #2a271f;
+  background: var(--ink, #0c110f);
+  border: 1px solid var(--line, #232a27);
   border-radius: 8px;
   padding: 11px 14px;
   font-family: 'Space Grotesk', sans-serif;
   font-size: 14.5px;
-  color: #ece8de;
+  color: var(--text, #ece8de);
   outline: none;
-  transition: border-color 0.15s ease;
+  transition: border-color 0.15s ease, background 0.15s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.form-group input::placeholder {
+  color: #5c584c;
+}
+
+.form-group input:hover,
+.form-group select:hover,
+.form-group textarea:hover {
+  border-color: #3c3628;
 }
 
 .form-group input:focus,
+.form-group select:focus,
 .form-group textarea:focus {
-  border-color: #c9793c;
+  border-color: var(--accent, #c9793c);
+  background: var(--ink, #0c110f);
+}
+
+.form-group select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%238a8578'%3e%3cpath d='M5.25 7.5L10 12.25L14.75 7.5' stroke='%238a8578' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+  cursor: pointer;
+}
+
+.form-group select option {
+  background: var(--ink, #0c110f);
+  color: var(--text, #ece8de);
 }
 
 .form-group textarea {
@@ -192,4 +228,106 @@
   text-align: center;
   color: #8a8578;
   font-size: 14px;
+}
+
+/* ===== Skill Modal (samain dengan .form-modal-card project) ===== */
+
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.65);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.modal-overlay.is-open {
+  display: flex;
+  opacity: 1;
+}
+
+.modal-box {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  max-height: 85vh;
+  overflow-y: auto;
+  background: var(--panel, #0c110f);
+  border: 1px solid var(--line, #232a27);
+  border-radius: var(--radius, 10px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
+  padding: 20px 22px 22px;
+  transform: scale(0.97);
+  transition: transform 0.2s ease;
+}
+
+.modal-overlay.is-open .modal-box {
+  transform: scale(1);
+}
+
+.modal-eyebrow {
+  display: block;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent, #c9793c);
+  margin: 0 0 4px;
+}
+
+.modal-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text, #ece8de);
+  margin: 0 0 16px;
+  padding-right: 26px;
+}
+
+.modal-close {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  background: transparent;
+  border: none;
+  color: var(--muted, #8a8578);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 6px;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.modal-close:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text, #ece8de);
+}
+
+.modal-loading {
+  padding: 26px 0;
+  text-align: center;
+  color: var(--muted, #8a8578);
+  font-size: 0.85rem;
+}
+
+.modal-body .settings-form {
+  max-width: none;
+  margin-top: 0;
+}
+
+.modal-box::-webkit-scrollbar {
+  width: 6px;
+}
+.modal-box::-webkit-scrollbar-thumb {
+  background: var(--line, #232a27);
+  border-radius: 999px;
 }

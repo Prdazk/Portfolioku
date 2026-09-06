@@ -67,10 +67,12 @@ db.exec(`
     description TEXT
   );
 
-  CREATE TABLE IF NOT EXISTS messages (
+    CREATE TABLE IF NOT EXISTS messages (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     email TEXT NOT NULL,
+    subject TEXT,
+    phone TEXT,
     message TEXT NOT NULL,
     isRead INTEGER NOT NULL DEFAULT 0,
     createdAt TEXT DEFAULT (datetime('now'))
@@ -86,6 +88,18 @@ db.exec(`
     maintenanceMode INTEGER NOT NULL DEFAULT 0
   );
 `);
+
+// ===== MIGRASI KOLOM BARU UNTUK TABEL LAMA (aman diulang tiap server start) =====
+function addColumnIfNotExists(table, column, definition) {
+  const existingColumns = db.prepare(`PRAGMA table_info(${table})`).all().map((col) => col.name);
+  if (!existingColumns.includes(column)) {
+    db.exec(`ALTER TABLE ${table} ADD COLUMN ${column} ${definition}`);
+    console.log(`Kolom "${column}" berhasil ditambahkan ke tabel "${table}".`);
+  }
+}
+
+addColumnIfNotExists('messages', 'subject', 'TEXT');
+addColumnIfNotExists('messages', 'phone', 'TEXT');
 
 // ===== SEED DATA AWAL (biar dropdown kategori/teknologi tidak kosong) =====
 const seedCategories = ['AI / Machine Learning', 'IoT', 'Web Development', 'Mobile Development', 'Data Science / Analytics', 'UI/UX Design'];

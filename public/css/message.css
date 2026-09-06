@@ -1,0 +1,222 @@
+/* ===== MESSAGES PAGE (messages.css) ===== */
+/* Menggunakan CSS variables dari dashboard.css: --ink, --panel, --panel-hover, --line, --text, --muted, --accent, --accent-dim, --sage, --danger, --radius */
+
+.filter-tabs {
+  display: flex;
+  gap: 4px;
+  margin: 0 0 28px;
+  padding: 4px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  width: fit-content;
+}
+
+.filter-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  text-decoration: none;
+  color: var(--muted);
+  padding: 9px 16px;
+  border-radius: 7px;
+  font-size: 0.86rem;
+  font-weight: 500;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.filter-tab:hover {
+  color: var(--text);
+  background: var(--panel-hover);
+}
+
+.filter-tab.active {
+  background: var(--accent-dim);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.count-badge {
+  background: var(--accent);
+  color: #21180a;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 1px 7px;
+  border-radius: 999px;
+  min-width: 18px;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.message-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 760px;
+}
+
+.message-card {
+  position: relative;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 22px 26px;
+  cursor: default;
+  overflow: hidden;
+  transition: border-color 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
+}
+
+.message-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: transparent;
+  transition: background 0.15s ease;
+}
+
+.message-card.is-unread {
+  border-color: rgba(230, 178, 74, 0.3);
+  cursor: pointer;
+}
+
+.message-card.is-unread::before {
+  background: var(--accent);
+}
+
+.message-card.is-unread:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px -10px rgba(230, 178, 74, 0.25);
+}
+
+.badge-unread {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--accent-dim);
+  color: var(--accent);
+  border: 1px solid rgba(230, 178, 74, 0.35);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.63rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  padding: 3px 9px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.badge-unread::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 6px var(--accent);
+}
+
+.message-head {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: start;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.message-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+  min-width: 0;
+}
+
+.message-name {
+  color: var(--text);
+  font-weight: 600;
+  font-size: 1.02rem;
+}
+
+.message-email,
+.message-phone {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.message-date {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--muted);
+  font-size: 0.75rem;
+  white-space: nowrap;
+  opacity: 0.8;
+  flex-shrink: 0;
+  padding-top: 2px;
+}
+
+.message-subject {
+  display: inline-block;
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 0.92rem;
+  margin: 0 0 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px dashed rgba(230, 178, 74, 0.3);
+}
+
+.message-body {
+  color: var(--text);
+  opacity: 0.85;
+  font-size: 0.92rem;
+  line-height: 1.65;
+  margin: 0 0 18px;
+  white-space: pre-line;
+}
+
+.message-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.inline-form {
+  display: inline;
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--text);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.83rem;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-ghost:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-dim);
+}
+
+.btn-ghost.btn-danger:hover {
+  border-color: var(--danger);
+  color: var(--danger);
+  background: rgba(201, 105, 79, 0.08);
+}
+
+.empty-state {
+  color: var(--muted);
+  font-size: 0.92rem;
+  padding: 60px 0;
+  text-align: center;
+}

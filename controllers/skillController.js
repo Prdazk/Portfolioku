@@ -10,8 +10,9 @@ exports.newForm = (req, res) => {
 };
 
 exports.create = (req, res) => {
-  const { name, category, level } = req.body;
-  db.prepare('INSERT INTO skills (name, category, level) VALUES (?, ?, ?)').run(name, category, level);
+  const { name, category, level, icon, sort_order } = req.body;
+  db.prepare('INSERT INTO skills (name, category, level, icon, sort_order) VALUES (?, ?, ?, ?, ?)')
+    .run(name, category, level, icon || null, sort_order || 0);
   res.redirect('/admin/skills');
 };
 
@@ -21,8 +22,9 @@ exports.editForm = (req, res) => {
 };
 
 exports.update = (req, res) => {
-  const { name, category, level } = req.body;
-  db.prepare('UPDATE skills SET name = ?, category = ?, level = ? WHERE id = ?').run(name, category, level, req.params.id);
+  const { name, category, level, icon, sort_order } = req.body;
+  db.prepare('UPDATE skills SET name = ?, category = ?, level = ?, icon = ?, sort_order = ? WHERE id = ?')
+    .run(name, category, level, icon || null, sort_order || 0, req.params.id);
   res.redirect('/admin/skills');
 };
 

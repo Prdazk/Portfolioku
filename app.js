@@ -72,6 +72,8 @@ app.get('/contact', (req, res) => {
   res.render('contact', { page: 'contact' });
 });
 
+app.post('/contact', messageController.storeFromPublic);
+
 // ===== ROUTE ADMIN - LOGIN =====
 app.get('/admin/login', (req, res) => {
   res.render('admin/login', { error: null });
@@ -104,9 +106,21 @@ app.post('/admin/login', async (req, res) => {
 
 app.get('/admin/dashboard', requireAdminLogin, (req, res) => {
   const totalProjects = db.prepare('SELECT COUNT(*) AS count FROM projects').get().count;
+  const totalSkills = db.prepare('SELECT COUNT(*) AS count FROM skills').get().count;
+  const totalExperience = db.prepare('SELECT COUNT(*) AS count FROM experiences').get().count;
+  const totalMessages = db.prepare('SELECT COUNT(*) AS count FROM messages').get().count;
+  const settingsData = db.prepare('SELECT COUNT(*) AS count FROM settings').get().count;
 
-  res.render('admin/dashboard', { totalProjects });
+  res.render('admin/dashboard', {
+    totalProjects,
+    totalSkills,
+    totalExperience,
+    totalMessages,
+    isSettingsConfigured: settingsData > 0,
+    siteStatus: 'online'
+  });
 });
+
 
 app.get('/admin/logout', (req, res) => {
   req.session.destroy(() => {
@@ -141,6 +155,7 @@ app.post('/admin/experience/:id/delete', requireAdminLogin, experienceController
 
 // ===== ROUTE ADMIN - MESSAGES =====
 app.get('/admin/messages', requireAdminLogin, messageController.index);
+app.post('/admin/messages/:id/read', requireAdminLogin, messageController.markAsRead);
 app.post('/admin/messages/:id/delete', requireAdminLogin, messageController.destroy);
 
 // ===== ROUTE ADMIN - SETTINGS =====

@@ -23,18 +23,29 @@
       </div>
     </div>
 
-    <div class="stat-strip">
+        <div class="stat-strip">
       <div class="stat-card">
         <div class="stat-num mono"><%= typeof totalProjects !== 'undefined' ? totalProjects : '-' %></div>
         <div class="stat-label">Total Project</div>
       </div>
       <div class="stat-card">
-        <div class="stat-num mono"><%= typeof totalCategories !== 'undefined' ? totalCategories : '-' %></div>
-        <div class="stat-label">Kategori</div>
+        <div class="stat-num mono"><%= typeof totalSkills !== 'undefined' ? totalSkills : '-' %></div>
+        <div class="stat-label">Total Skill</div>
       </div>
       <div class="stat-card">
-        <div class="stat-num mono"><%= typeof totalTechnologies !== 'undefined' ? totalTechnologies : '-' %></div>
-        <div class="stat-label">Teknologi</div>
+        <div class="stat-num mono"><%= typeof totalExperience !== 'undefined' ? totalExperience : '-' %></div>
+        <div class="stat-label">Total Experience</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num mono"><%= typeof totalMessages !== 'undefined' ? totalMessages : '-' %></div>
+        <div class="stat-label">Pesan Masuk</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-status-value mono">
+          <span class="status-dot <%= typeof isSettingsConfigured !== 'undefined' && isSettingsConfigured ? 'online' : 'offline' %>"></span>
+          <%= typeof isSettingsConfigured !== 'undefined' ? (isSettingsConfigured ? 'Aktif' : 'Kosong') : '-' %>
+        </div>
+        <div class="stat-label">Settings</div>
       </div>
       <div class="stat-card">
         <div class="stat-status-value mono">

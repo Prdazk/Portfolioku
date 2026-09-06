@@ -22,7 +22,7 @@
         <h1>Stack yang kamu kuasai</h1>
         <p class="topbar-sub">Diurutkan per kategori, geser levelnya sesuai seberapa jago kamu sekarang.</p>
       </div>
-      <a href="/admin/skills/new" class="btn-primary">+ Tambah Skill</a>
+            <button type="button" class="btn-primary js-open-skill-modal" data-url="/admin/skills/new">+ Tambah Skill</button>
     </div>
 
     <%
@@ -49,8 +49,8 @@
                   <div class="level-fill" data-level="<%= skill.level || 0 %>"></div>
                 </div>
                 <span class="level-value"><%= skill.level || 0 %>%</span>
-                <div class="skill-row-actions">
-                  <a href="/admin/skills/<%= skill.id %>/edit">Edit</a>
+                                <div class="skill-row-actions">
+                  <a href="/admin/skills/<%= skill.id %>/edit" class="js-open-skill-modal" data-url="/admin/skills/<%= skill.id %>/edit">Edit</a>
                   <form class="delete-skill-form" action="/admin/skills/<%= skill.id %>/delete" method="POST" data-skill-name="<%= skill.name %>">
                     <button type="submit">Hapus</button>
                   </form>
@@ -67,7 +67,78 @@
 
 </div>
 
+
+<div class="modal-overlay" id="skillModal">
+  <div class="modal-box">
+    <button type="button" class="modal-close" id="skillModalClose">&times;</button>
+    <div class="modal-body" id="skillModalBody">
+      <div class="modal-loading">Memuat form...</div>
+    </div>
+  </div>
+</div>
+
 <script>
+const skillModal = document.getElementById('skillModal');
+const skillModalBody = document.getElementById('skillModalBody');
+const skillModalClose = document.getElementById('skillModalClose');
+
+function openSkillModal(url) {
+  skillModal.classList.add('is-open');
+  skillModalBody.innerHTML = '<div class="modal-loading">Memuat form...</div>';
+
+  fetch(url)
+    .then(function (res) { return res.text(); })
+    .then(function (html) {
+      const parsed = new DOMParser().parseFromString(html, 'text/html');
+      const form = parsed.querySelector('.settings-form');
+      const title = parsed.querySelector('h1');
+      const eyebrow = parsed.querySelector('.eyebrow');
+
+      if (form) {
+        skillModalBody.innerHTML = '';
+        if (eyebrow) {
+          const p = document.createElement('p');
+          p.className = 'modal-eyebrow';
+          p.textContent = eyebrow.textContent;
+          skillModalBody.appendChild(p);
+        }
+        if (title) {
+          const h2 = document.createElement('h2');
+          h2.className = 'modal-title';
+          h2.textContent = title.textContent;
+          skillModalBody.appendChild(h2);
+        }
+        skillModalBody.appendChild(form);
+      } else {
+        skillModalBody.innerHTML = '<div class="modal-loading">Gagal memuat form.</div>';
+      }
+    })
+    .catch(function () {
+      skillModalBody.innerHTML = '<div class="modal-loading">Terjadi kesalahan saat memuat form.</div>';
+    });
+}
+
+function closeSkillModal() {
+  skillModal.classList.remove('is-open');
+}
+
+document.querySelectorAll('.js-open-skill-modal').forEach(function (el) {
+  el.addEventListener('click', function (e) {
+    e.preventDefault();
+    openSkillModal(el.dataset.url);
+  });
+});
+
+skillModalClose.addEventListener('click', closeSkillModal);
+
+skillModal.addEventListener('click', function (e) {
+  if (e.target === skillModal) closeSkillModal();
+});
+
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape') closeSkillModal();
+});
+
 document.querySelectorAll('.delete-skill-form').forEach(function (form) {
   form.addEventListener('submit', function (e) {
     const name = form.dataset.skillName || 'skill ini';
