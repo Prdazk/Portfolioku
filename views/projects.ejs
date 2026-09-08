@@ -34,18 +34,14 @@
                 <p class="project-card-desc"><%= project.description %></p>
               <% } %>
               <div class="project-card-links">
-                <% if (project.live_url) { %>
-                  <button type="button"
-                    class="js-preview-project"
-                    data-title="<%= project.title %>"
-                    data-description="<%= project.description || '' %>"
-                    data-live="<%= project.live_url %>"
-                    data-github="<%= project.github_url || '' %>"
-                    data-thumbnail="<%= project.thumbnail || '' %>"
-                    data-technologies='<%= JSON.stringify(project.technologies || []) %>'>
-                    View Live
-                  </button>
-                <% } %>
+                <button type="button"
+                  class="js-preview-project"
+                  data-title="<%= project.title %>"
+                  data-description="<%= project.description || '' %>"
+                  data-images='<%= JSON.stringify(project.images && project.images.length > 0 ? project.images : (project.thumbnail ? [project.thumbnail] : [])) %>'
+                  data-technologies='<%= JSON.stringify(project.technologies || []) %>'>
+                  Lihat Detail
+                </button>
                 <% if (project.github_url) { %>
                   <a href="<%= project.github_url %>" target="_blank" rel="noopener">GitHub Repo</a>
                 <% } %>
@@ -64,18 +60,18 @@
   <!-- Modal Preview Project -->
   <div class="preview-modal-overlay" id="previewOverlay">
     <div class="preview-modal-box">
+
       <div class="preview-modal-header">
         <h2>Project Preview: <span id="previewTitle"></span></h2>
-        <div class="preview-header-actions">
-          <a id="previewOpenNewTab" href="#" target="_blank" rel="noopener">Open in new tab &#8599;</a>
-          <button type="button" id="previewCloseBtn" aria-label="Tutup">&times;</button>
-        </div>
       </div>
 
       <div class="preview-modal-body">
-        <div class="preview-thumb">
+        <div class="preview-thumb" id="previewThumb">
+          <button type="button" class="preview-nav preview-nav-prev" id="previewPrevBtn">&#8592;</button>
           <img id="previewImage" src="" alt="">
           <span class="thumb-placeholder" id="previewPlaceholder">&#9670;</span>
+          <button type="button" class="preview-nav preview-nav-next" id="previewNextBtn">&#8594;</button>
+          <span class="preview-image-counter" id="previewImageCounter"></span>
         </div>
 
         <div class="preview-details">
@@ -88,9 +84,9 @@
       </div>
 
       <div class="preview-modal-footer">
-        <a id="previewFullSiteBtn" href="#" target="_blank" rel="noopener" class="btn-preview-primary">View Full Site</a>
         <button type="button" id="previewCloseBtn2" class="btn-preview-secondary">Close Preview</button>
       </div>
+
     </div>
   </div>
 

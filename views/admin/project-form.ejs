@@ -56,7 +56,7 @@
             <label for="slug">Slug / URL</label>
             <input type="text" id="slug" name="slug" placeholder="nama-project-kamu"
               value="<%= project ? (project.slug || '') : '' %>">
-            <p class="field-hint">Kosongkan untuk auto-generate dari judul.</p>
+            <p class="field-hint">Kosongkan biar otomatis dibuat dari judul.</p>
           </div>
 
           <div class="input-group">
@@ -87,7 +87,7 @@
             <input type="text" id="technologies" name="technologies"
               placeholder="cth: React, Node.js, MongoDB"
               value="<%= project && project.technologies_text ? project.technologies_text : (technologies || []).filter(t => selectedTechIds.includes(t.id)).map(t => t.name).join(', ') %>">
-            <p class="field-hint">Tulis bebas, pisahkan dengan koma. Tidak dibatasi daftar tetap.</p>
+            <p class="field-hint">Pisahkan dengan koma, cth: React, Node.js.</p>
           </div>
 
           <!-- ============ TEMPLATE FIELD: WEB ============ -->
@@ -186,11 +186,11 @@
                   </div>
                 <% }); %>
               </div>
-              <p class="field-hint">Centang gambar yang ingin dihapus. Gambar teratas otomatis jadi thumbnail utama.</p>
+              <p class="field-hint">Centang untuk hapus. Gambar teratas jadi thumbnail.</p>
             <% } %>
 
             <input type="file" id="images" name="images" accept=".jpg,.jpeg,.png,.webp,.gif" multiple>
-            <p class="field-hint">Bisa pilih beberapa file sekaligus (maks 10 gambar, masing-masing maks 5MB).</p>
+           <p class="field-hint">Maks 10 gambar, masing-masing 5MB.</p>
           </div>
 
            <div class="form-modal-actions">

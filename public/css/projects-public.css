@@ -175,6 +175,7 @@
   padding: 24px;
   opacity: 0;
   transition: opacity 0.3s ease;
+  box-sizing: border-box;
 }
 
 .preview-modal-overlay.active {
@@ -198,10 +199,11 @@
   background: #17180f;
   border: 1px solid #2b2c22;
   border-radius: 12px;
-  max-width: 900px;
   width: 100%;
+  max-width: 1140px;
   max-height: 90vh;
   overflow-y: auto;
+  box-sizing: border-box;
 }
 
 .preview-modal-header {
@@ -223,33 +225,12 @@
   font-weight: 700;
 }
 
-.preview-header-actions {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-}
-
-.preview-header-actions a {
-  color: #d9a44a;
-  font-size: 13px;
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.preview-header-actions button {
-  background: none;
-  border: none;
-  color: #9a9d95;
-  font-size: 22px;
-  cursor: pointer;
-  line-height: 1;
-}
-
 .preview-modal-body {
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 24px;
   padding: 24px;
+  box-sizing: border-box;
 }
 
 @media (max-width: 700px) {
@@ -257,13 +238,15 @@
 }
 
 .preview-thumb {
+  position: relative;
   background: linear-gradient(135deg, #17223f, #0e1526);
   border-radius: 8px;
-  min-height: 260px;
+  aspect-ratio: 16 / 10;
+  width: 100%;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
 }
 
 .preview-thumb img {
@@ -271,6 +254,54 @@
   height: 100%;
   object-fit: cover;
   display: block;
+  transition: opacity 0.2s ease;
+}
+
+.preview-thumb img.is-fading {
+  opacity: 0;
+}
+
+.preview-thumb .thumb-placeholder {
+  font-size: 32px;
+  color: #d9a44a99;
+}
+
+.preview-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: #f4f1ea;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 16px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.preview-nav:hover {
+  background: rgba(0, 0, 0, 0.75);
+}
+
+.preview-nav-prev { left: 12px; }
+.preview-nav-next { right: 12px; }
+
+.preview-image-counter {
+  position: absolute;
+  bottom: 10px;
+  right: 12px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #f4f1ea;
+  font-size: 11px;
+  padding: 3px 9px;
+  border-radius: 20px;
+  display: none;
+  z-index: 2;
 }
 
 .preview-details h4 {

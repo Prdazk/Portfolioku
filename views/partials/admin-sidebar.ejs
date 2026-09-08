@@ -3,11 +3,6 @@
     <span class="brand-dot"></span>
     <span class="brand-name">Portfolio / Admin</span>
   </div>
-  <p class="status-line">
-    <% if (typeof projects !== 'undefined') { %>
-      <%= projects.length %> project<%= projects.length === 1 ? '' : ''  %> tersimpan
-    <% } %>
-  </p>
 
   <nav class="primary-nav">
     <a href="/admin/dashboard" class="nav-item <%= active === 'dashboard' ? 'is-active' : '' %>">
